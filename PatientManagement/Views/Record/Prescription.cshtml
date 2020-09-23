@@ -1,0 +1,49 @@
+﻿@using BELibrary.Entity
+@using BELibrary.Utils
+@model List<Prescription>
+
+@{
+    ViewBag.Title = "Đơn thuốc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Partial("_PartialSlide")
+
+<div class="container" style="padding-top: 90px">
+    <h2 class="text-center"> Thông tin đơn thuốc</h2>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="tblData">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center">Tên thuốc </th>
+                            <th class="text-center">Số lượng </th>
+                            <th class="text-center">Ghi chú </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                        {
+                            <tr id="row_@item.value.DetailPrescription.Id">
+                                <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                                <td class="text-center">@item.value.DetailPrescription.Medicine.Name</td>
+                                <td class="text-center">@item.value.DetailPrescription.Amount - @item.value.DetailPrescription.Unit </td>
+                                <td class="text-center">
+                                    <textarea rows="5" class="form-control" style="min-width: 370px" disabled="">@item.value.DetailPrescription.Note</textarea>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer text-center">
+            <a class="btn btn-success" href="/account"> Quay lại</a>
+        </div>
+    </div>
+</div>
+
+<!-- end main-content -->
+@section Scripts {
+}

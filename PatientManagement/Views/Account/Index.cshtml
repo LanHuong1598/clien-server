@@ -1,0 +1,241 @@
+﻿@using PatientManagement.Handler
+@using BELibrary.Entity
+
+@{
+    ViewBag.Title = "Trang cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = CookiesManage.GetUser();
+}
+
+@model List<DetailRecord>
+@{
+    ViewBag.Title = "Create";
+    var patient = (Patient)ViewBag.Patient ?? new Patient();
+    var record = (Record)ViewBag.Record ?? new Record();
+
+    var result = record.Result;
+    var note = record.Note;
+}
+
+<style>
+    .fa {
+        margin-right: 10px;
+    }
+
+    .bg-black-333 {
+        background-color: darkseagreen;
+        margin-top: 10px;
+        padding-top: 10px;
+        padding-bottom: 32px;
+        color: white;
+    }
+
+    .full-name {
+        padding-top: 12px;
+        color: white;
+    }
+
+    .styled-icons li {
+        display: inline-block;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .styled-icons.icon-sm a {
+        font-size: 13px;
+        height: 30px;
+        line-height: 30px;
+        margin: 2px 7px 2px 0;
+        width: 30px;
+    }
+
+    .styled-icons.icon-circled a {
+        border-radius: 50%;
+    }
+
+    .styled-icons.icon-gray a {
+        background-color: #eeeeee;
+        color: #555555;
+        display: block;
+        font-size: 18px;
+        height: 36px;
+        line-height: 36px;
+        width: 36px;
+    }
+
+    .mb-15 {
+        margin-bottom: 15px !important;
+    }
+
+    .mt-15 {
+        margin-top: 15px !important;
+    }
+
+    ul, ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Start main-content -->
+<div class="main-content" style="padding-top:85px">
+
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/Content/images/bg/bg3.jpg">
+        <div class="container pt-70 pb-20">
+            <!-- Section Content -->
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="full-name text-center">@user.FullName</h2>
+                        <ol class="breadcrumb text-left text-black mt-10">
+                            <li><a href="/">Trang chủ</a></li>
+                            <li class="active text-gray-silver">Tài khoản của tôi</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Doctor Details -->
+    <section class="container">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="fixed-fluid" style="font-family: roboto;">
+                    <div class="fixed-md-200 pull-sm-left fixed-right-border">
+
+                        <!-- Simple profile -->
+                        <div class="text-center">
+                            <div class="pad-ver">
+                                <img src="~/Areas/Admin/Content/img/profile-photos/1.png" class="img-lg img-circle" alt="Profile Picture">
+                            </div>
+                            <h4 class="text-lg text-overflow mar-no">@patient.FullName</h4>
+                            <p class="text-sm text-muted">@patient.Job</p>
+
+                            <a class="btn btn-block btn-success btn-lg" href="/account/edit">Sửa thông tin</a>
+                        </div>
+                        <hr>
+
+                        <!-- Profile Details -->
+                        <p class="pad-ver text-main text-sm text-uppercase text-bold">Thông tin</p>
+                        <p><i class="fa fa-code icon-lg icon-fw"></i>   <label class="label label-success" style="font-size: 12px;">@patient.PatientCode</label> </p>
+                        <p><i class="fa fa-map-marker icon-lg icon-fw"></i> @patient.Address</p>
+                        <p><a href="#" class="btn-link"><i class="fa fa-tags icon-lg icon-fw"></i> @patient.DateOfBirth.ToString("dd/MM/yyyy")</a></p>
+                        <p><i class="fa fa-phone icon-lg icon-fw"></i>  @patient.Phone</p>
+                    </div>
+                    <div class="fluid">
+                        <div class="fixed-fluid">
+                            <div class="fixed-sm-300 pull-sm-right">
+                                <form id="form-record">
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <p class="text-main text-bold text-uppercase">Bác sĩ hội chuẩn</p>
+                                            <input type="hidden" value="@record.Id" name="Id" />
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <i class="fa fa-user-md"></i>  @record.Doctor.Name
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="text-main text-bold text-uppercase">Kết quả</p>
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        @Html.TextAreaFor(model => result, new { @class = "form-control", @rows = "10" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <p class="text-main text-sm text-uppercase text-bold">Ghi chú</p>
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        @Html.TextAreaFor(model => note, new { @class = "form-control", @rows = "10" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="fluid">
+                                <div class="form-group text-center">
+                                    <h3> Bệnh án - Bệnh nhân: @patient.FullName</h3>
+                                </div>
+
+                                <div class="panel">
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th class="text-center">Tên bệnh </th>
+                                                        <th class="text-center">Trạng thái </th>
+                                                        <th class="text-center">Lần khám </th>
+                                                        <th class="text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                                                    {
+                                                        <tr id="row_@item.value.Id">
+                                                            <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                                                            <td class="text-center">@item.value.DiseaseName</td>
+                                                            @if (item.value.Status)
+                                                            {
+                                                                <td class="text-center">
+                                                                    <label class="label label-success" style="font-size: 12px;">Đã kết luận</label>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="text-center">
+                                                                    <label class="label label-warning" style="font-size: 12px;">Chờ thăm khám</label>
+                                                                </td>
+                                                            }
+
+                                                            <td class="text-center">@item.value.Process</td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-info btn-icon" title="Thuốc" onclick="openRedirect(false,'@item.value.Id')"><i class="fa fa-info-circle icon-sm" style="margin-right: 0px;"></i></button>
+                                                                <button class="btn btn-info btn-icon" title="Tệp đính kèm" onclick="openRedirect(true,'@item.value.Id')"><i class="fa fa-files-o icon-sm" style="margin-right: 0px;"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- end main-content -->
+@section Scripts {
+    <script>
+        function openRedirect(isFile, id) {
+            if (isFile) {
+                window.location.href = `/record/Attachment?detailRecordId=${id}`;
+            } else {
+                window.location.href = `/record/Prescription?detailRecordId=${id}`;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,663 @@
+﻿@using PatientManagement.Areas.Admin.Authorization
+@{
+    var baseURL = "/Areas/Admin/Content";
+    var client = CookiesManage.GetUser();
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="shortcut icon" href="~/Content/images/favicon.png" />
+
+    <title>Admin | @(ViewBag.Title ?? "Trang quản trị")</title>
+
+    <!--STYLESHEET-->
+    <!--=================================================-->
+    <!--Open Sans Font [ OPTIONAL ]-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+    <link href="@baseURL/css/bootstrap.min.css" rel="stylesheet" />
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    <link href="@baseURL/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Nifty Stylesheet [ REQUIRED ]-->
+    <link href="@baseURL/css/nifty.min.css" rel="stylesheet">
+
+    <!--Nifty Premium Icon [ DEMONSTRATION ]-->
+    <link href="@baseURL/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+    <!--Select2 [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/select2/css/select2.min.css" rel="stylesheet">
+
+    <!--Spinkit [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/spinkit/css/spinkit.min.css" rel="stylesheet">
+
+    <!--=================================================-->
+    <!--Pace - Page Load Progress Par [OPTIONAL]-->
+    <link href="@baseURL/plugins/pace/pace.min.css" rel="stylesheet">
+
+    <script src="@baseURL/plugins/pace/pace.min.js"></script>
+
+    <!--Demo [ DEMONSTRATION ]-->
+    <link href="@baseURL/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+    <!--Font Awesome [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--=================================================
+
+    REQUIRED
+    You must include this in your project.
+
+    RECOMMENDED
+    This category must be included but you may modify which plugins or components which should be included in your project.
+
+    OPTIONAL
+    Optional plugins. You may choose whether to include it in your project or not.
+
+    DEMONSTRATION
+    This is to be removed, used for demonstration purposes only. This category must not be included in your project.
+
+    SAMPLE
+    Some script samples which explain how to initialize plugins or components. This category should not be included in your project.
+
+    Detailed information and more samples can be found in the document.
+
+    =================================================-->
+    <style>
+        .fade-loading {
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100000
+        }
+
+        .floating-container {
+            z-index: 100001
+        }
+
+        .pad-5 {
+            padding: 5px;
+        }
+
+        .mg-5-2 {
+            margin: 5px 2px;
+        }
+
+        .mg-t-b-35-50 {
+            margin-top: 35px;
+            margin-bottom: 50px;
+        }
+
+        #cinema-form input, #cinema-form select {
+            margin-bottom: 10px;
+        }
+    </style>
+    @RenderSection("CSS", required: false)
+</head>
+
+<!--TIPS-->
+<!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+
+        <!--NAVBAR-->
+        <!--===================================================-->
+        <header id="navbar">
+            <div id="navbar-container" class="boxed">
+
+                <!--Brand logo & name-->
+                <!--================================-->
+                <div class="navbar-header">
+                    <a href="/admin" class="navbar-brand" style="text-align: center;">
+                        <img src="~/Content/images/favicon.png" alt="Nifty Logo" class="brand-icon" style="float: none;display: inline-block;">
+                    </a>
+                </div>
+                <!--================================-->
+                <!--End brand logo & name-->
+                <!--Navbar Dropdown-->
+                <!--================================-->
+                <div class="navbar-content">
+                    <ul class="nav navbar-top-links">
+
+                        <!--Navigation toogle button-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="tgl-menu-btn">
+                            <a class="mainnav-toggle" href="#">
+                                <i class="demo-pli-list-view"></i>
+                            </a>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End Navigation toogle button-->
+                    </ul>
+                    <ul class="nav navbar-top-links">
+                        <li>
+                            <a href="/" target="_blank">
+                                <i class="demo-pli-home"></i>
+                            </a>
+                        </li>
+                        <!--Notification dropdown-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <i class="demo-pli-bell"></i>
+                                <span class="badge badge-header badge-danger"></span>
+                            </a>
+
+                            <!--Notification dropdown menu-->
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                <div class="nano scrollable">
+                                    <div class="nano-content">
+                                        <ul class="head-list">
+                                            <li>
+                                                <a href="#" class="media add-tooltip" data-title="Used space : 95%" data-container="body" data-placement="bottom">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-data-settings icon-2x text-main"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="text-nowrap text-main text-semibold">HDD is full</p>
+                                                        <div class="progress progress-sm mar-no">
+                                                            <div style="width: 95%;" class="progress-bar progress-bar-danger">
+                                                                <span class="sr-only">95% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-file-edit icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">Write a news article</p>
+                                                        <small>Last Update 8 hours ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <span class="label label-info pull-right">New</span>
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-speech-bubble-7 icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">Comment Sorting</p>
+                                                        <small>Last Update 8 hours ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-add-user-star icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">New User Registered</p>
+                                                        <small>4 minutes ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!--Dropdown footer-->
+                                <div class="pad-all bord-top">
+                                    <a href="#" class="btn-link text-main box-block">
+                                        <i class="pci-chevron chevron-right pull-right"></i>Show All Notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End notifications dropdown-->
+                        <!--User dropdown-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li id="dropdown-user" class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+                                <span class="ic-user pull-right">
+                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                    <!--You can use an image instead of an icon.-->
+                                    <!--<img class="img-circle img-user media-object" src="img/profile-photos/1.png" alt="Profile Picture">-->
+                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                    <i class="demo-pli-male"></i>
+                                </span>
+                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                <!--You can also display a user name in the navbar.-->
+                                <!--<div class="username hidden-xs">Aaron Chavez</div>-->
+                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
+                                <ul class="head-list">
+                                    <li>
+                                        <a href="#"><i class="demo-pli-male icon-lg icon-fw"></i> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><span class="badge badge-danger pull-right">9</span><i class="demo-pli-mail icon-lg icon-fw"></i> Messages</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><span class="label label-success pull-right">New</span><i class="demo-pli-gear icon-lg icon-fw"></i> Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="demo-pli-computer-secure icon-lg icon-fw"></i> Lock screen</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Login/logout"><i class="demo-pli-unlock icon-lg icon-fw"></i> Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End user dropdown-->
+                    </ul>
+                </div>
+                <!--================================-->
+                <!--End Navbar Dropdown-->
+            </div>
+        </header>
+        <!--===================================================-->
+        <!--END NAVBAR-->
+
+        <div class="boxed">
+
+            <!--CONTENT CONTAINER-->
+            <!--===================================================-->
+            <div id="content-container">
+                <div id="page-head">
+
+                    <!--Page Title-->
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <div id="page-title">
+                        <h1 class="page-header text-overflow">@ViewBag.Feature</h1>
+                    </div>
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <!--End page title-->
+                    <!--Breadcrumb-->
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="demo-pli-home"></i></a></li>
+                        <li><a href="@ViewBag.BaseURL">@ViewBag.Element</a></li>
+                        <li class="active">@ViewBag.Feature</li>
+                    </ol>
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <!--End breadcrumb-->
+                </div>
+
+                <!--Page content-->
+                <!--===================================================-->
+                <div id="page-content">
+
+                    @RenderBody()
+                </div>
+                <!--===================================================-->
+                <!--End page content-->
+            </div>
+            <!--===================================================-->
+            <!--END CONTENT CONTAINER-->
+            <!--MAIN NAVIGATION-->
+            <!--===================================================-->
+            <nav id="mainnav-container">
+                <div id="mainnav">
+
+                    <!--OPTIONAL : ADD YOUR LOGO TO THE NAVIGATION-->
+                    <!--It will only appear on small screen devices.-->
+                    <!--================================
+                    <div class="mainnav-brand">
+                        <a href="index.html" class="brand">
+                            <img src="img/logo.png" alt="Nifty Logo" class="brand-icon">
+                            <span class="brand-text">Nifty</span>
+                        </a>
+                        <a href="#" class="mainnav-toggle"><i class="pci-cross pci-circle icon-lg"></i></a>
+                    </div>
+                    -->
+                    <!--Menu-->
+                    <!--================================-->
+                    <div id="mainnav-menu-wrap">
+                        <div class="nano">
+                            <div class="nano-content">
+
+                                <!--Profile Widget-->
+                                <!--================================-->
+                                <div id="mainnav-profile" class="mainnav-profile">
+                                    <div class="profile-wrap text-center">
+                                        <div class="pad-btm">
+                                            <img class="img-circle img-md" src="~/FileUploads/images/avatas/doctor.jpg" alt="Profile Picture">
+                                        </div>
+                                        <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
+                                            <span class="pull-right dropdown-toggle">
+                                                <i class="dropdown-caret"></i>
+                                            </span>
+                                            <p class="mnp-name"> @client.FullName</p>
+                                        </a>
+                                    </div>
+                                    <div id="profile-nav" class="collapse list-group bg-trans">
+                                        <a href="#" class="list-group-item">
+                                            <i class="demo-pli-male icon-lg icon-fw"></i> View Profile
+                                        </a>
+                                        <a href="#" class="list-group-item">
+                                            <i class="demo-pli-gear icon-lg icon-fw"></i> Settings
+                                        </a>
+                                        <a href="#" class="list-group-item">
+                                            <i class="demo-pli-information icon-lg icon-fw"></i> Help
+                                        </a>
+                                        <a href="/Admin/Login/logout" class="list-group-item">
+                                            <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!--Shortcut buttons-->
+                                <!--================================-->
+                                <div id="mainnav-shortcut" class="hidden">
+                                    <ul class="list-unstyled shortcut-wrap">
+                                        <li class="col-xs-3" data-content="My Profile">
+                                            <a class="shortcut-grid" href="#">
+                                                <div class="icon-wrap icon-wrap-sm icon-circle bg-mint">
+                                                    <i class="demo-pli-male"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="col-xs-3" data-content="Messages">
+                                            <a class="shortcut-grid" href="#">
+                                                <div class="icon-wrap icon-wrap-sm icon-circle bg-warning">
+                                                    <i class="demo-pli-speech-bubble-3"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="col-xs-3" data-content="Activity">
+                                            <a class="shortcut-grid" href="#">
+                                                <div class="icon-wrap icon-wrap-sm icon-circle bg-success">
+                                                    <i class="demo-pli-thunder"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="col-xs-3" data-content="Lock Screen">
+                                            <a class="shortcut-grid" href="#">
+                                                <div class="icon-wrap icon-wrap-sm icon-circle bg-purple">
+                                                    <i class="demo-pli-lock-2"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--================================-->
+                                <!--End shortcut buttons-->
+
+                                <ul id="mainnav-menu" class="list-group">
+
+                                    <!--Category name-->
+                                    <li class="list-header">System</li>
+
+                                    <!--Menu list item-->
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-home"></i>
+                                            <span class="menu-title">Dashboard</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("dashboard")? "collapse in" : "collapse")">
+                                            <li><a href="/">Home</a></li>
+                                            <li><a href="/admin">Bảng tin</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-male"></i>
+                                            <span class="menu-title">Bệnh nhân</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("patient")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/patient">Home</a></li>
+                                            <li><a href="/admin/patient/all">Danh sách</a></li>
+                                            <li><a href="/admin/patient/create">Tạo mới</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-file"></i>
+                                            <span class="menu-title">Danh mục</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("category")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/category">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-gear"></i>
+                                            <span class="menu-title">Vật tư</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("item")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/item">Danh sách</a></li>
+                                            <li><a href="/admin/item/create">Thêm mới</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-repair"></i>
+                                            <span class="menu-title">Thuốc</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("medicine")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/medicine">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-newspaper-o"></i>
+                                            <span class="menu-title">Khoa</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("faculty")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/faculty">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-user-md"></i>
+                                            <span class="menu-title">Bác sĩ</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("doctor")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/doctor">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-user"></i>
+                                            <span class="menu-title">Tài khoản</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("account")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/account">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-bar-chart"></i>
+                                            <span class="menu-title">Thống kê</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("statistical")? "collapse in" : "collapse")">
+                                            <li><a href="/admin/statistical">Danh sách</a></li>
+                                        </ul>
+                                    </li>
+                                    <!--Category name-->
+                                    <li class="list-header">Feature</li>
+
+                                    <!--Menu list item-->
+                                    <li>
+                                        <a href="#">
+                                            <i class="demo-pli-boot-2"></i>
+                                            <span class="menu-title">UI Elements</span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="collapse">
+                                            <li><a href="#">sub1</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <!--Widget-->
+                                <!--================================-->
+                                <div class="mainnav-widget">
+
+                                    <!-- Show the button on collapsed navigation -->
+                                    <div class="show-small">
+                                        <a href="#" data-toggle="menu-widget" data-target="#demo-wg-server">
+                                            <i class="demo-pli-monitor-2"></i>
+                                        </a>
+                                    </div>
+
+                                    <!-- Hide the content on collapsed navigation -->
+                                    <div id="demo-wg-server" class="hide-small mainnav-widget-content">
+                                        <ul class="list-group">
+                                            <li class="list-header pad-no mar-ver">Server Status</li>
+                                            <li class="mar-btm">
+                                                <span class="label label-primary pull-right">15%</span>
+                                                <p>CPU Usage</p>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-primary" style="width: 15%;">
+                                                        <span class="sr-only">15%</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="mar-btm">
+                                                <span class="label label-purple pull-right">75%</span>
+                                                <p>Bandwidth</p>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-purple" style="width: 75%;">
+                                                        <span class="sr-only">75%</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="pad-ver"><a href="#" class="btn btn-success btn-bock">View Details</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--================================-->
+                                <!--End widget-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--================================-->
+                    <!--End menu-->
+                </div>
+            </nav>
+            <!--===================================================-->
+            <!--END MAIN NAVIGATION-->
+        </div>
+
+        <!-- FOOTER -->
+        <!--===================================================-->
+        <footer id="footer">
+
+            <!-- Visible when footer positions are fixed -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="show-fixed pad-rgt pull-right">
+                You have <a href="#" class="text-main"><span class="badge badge-danger">3</span> pending action.</a>
+            </div>
+
+            <!-- Visible when footer positions are static -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="hide-fixed pull-right pad-rgt">
+                14GB of <strong>512GB</strong> Free.
+            </div>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <!-- Remove the class "show-fixed" and "hide-fixed" to make the content always appears. -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <p class="pad-lft">&#0169; @DateTime.Now.Year</p>
+        </footer>
+        <!--===================================================-->
+        <!-- END FOOTER -->
+        <!-- SCROLL PAGE BUTTON -->
+        <!--===================================================-->
+        <button class="scroll-top btn">
+            <i class="pci-chevron chevron-up"></i>
+        </button>
+        <!--===================================================-->
+    </div>
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+    <!--jQuery [ REQUIRED ]-->
+    <script src="@baseURL/js/jquery.min.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/js/bootstrap.min.js"></script>
+
+    <!--Select2 [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/select2/js/select2.min.js"></script>
+
+    <!--Masked Input [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/masked-input/jquery.maskedinput.min.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/plugins/ckeditor/ckeditor.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/plugins/ckfinder/ckfinder.js"></script>
+
+    <!--NiftyJS [ RECOMMENDED ]-->
+    <script src="@baseURL/js/nifty.min.js"></script>
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/bootbox/bootbox.min.js"></script>
+
+    <!--=================================================-->
+    <!--Ajax Request-->
+    <script src="@baseURL/js/base/ajax.js"></script>
+    <!-- notify -->
+    <script src="@baseURL/js/base/notify.js"></script>
+    <!-- validate -->
+    <script src="@baseURL/js/base/validate.js"></script>
+    <!-- form-->
+    <script src="@baseURL/js/base/form.js"></script>
+    <!-- mess-->
+    <script src="~/Areas/Admin/Content/js/base/mess.js"></script>
+    <!-- config-->
+    <script src="~/Areas/Admin/Content/js/base/config.js"></script>
+    <!-- Include scripts -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

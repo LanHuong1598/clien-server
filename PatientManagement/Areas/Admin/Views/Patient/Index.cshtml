@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Bảng điều khiển";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="panel">
+        <div class="eq-height clearfix">
+            <div class="col-md-4 eq-box-md text-center box-vmiddle-wrap bord-hor">
+
+                <!-- Simple Promotion Widget -->
+                <!--===================================================-->
+                <div class="box-vmiddle pad-all">
+                    <h3 class="text-main">Nhập thông tin bệnh nhân</h3>
+                    <div class="pad-ver">
+                        <i class="demo-pli-bag-coins icon-5x"></i>
+                    </div>
+                    <p class="pad-btn text-sm">Members get <span class="text-lg text-bold text-main">50%</span> more points, so register today and start earning points for savings on great rewards!</p>
+                    <br>
+                    <a class="btn btn-lg btn-primary" href="/Admin/Patient/Create" target="_blank">Thêm mới</a>
+                </div>
+                <!--===================================================-->
+            </div>
+            <div class="col-md-8 eq-box-md eq-no-panel">
+
+                <!-- Main Form Wizard -->
+                <!--===================================================-->
+                <div id="demo-main-wz">
+
+                    <!--nav-->
+                    <ul class="row wz-step wz-icon-bw wz-nav-off mar-top">
+                        <li class="col-xs-12">
+                            <a data-toggle="tab" href="#demo-main-tab1">
+                                <span class="text-danger"><i class="demo-pli-male  icon-2x"></i></span>
+                                <h5 class="mar-no">Tìm kiếm bệnh nhân</h5>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!--progress bar-->
+                    <div class="progress progress-xs">
+                        <div class="progress-bar progress-bar-primary"></div>
+                    </div>
+
+                    <!--form-->
+                    <form class="form-horizontal" method="get" action="/Admin/Patient/All">
+                        <div class="panel-body">
+                            <div class="tab-content">
+
+                                <!--First tab-->
+                                <div id="demo-main-tab1" class="tab-pane">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Mã bệnh nhân</label>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" name="patientCode" placeholder="Nhập mã bệnh nhân">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Số căn cước</label>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" name="IndentificationCardId" placeholder="Nhập số căn cước">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Họ Tên</label>
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control" name="fullName" placeholder="Nhập họ tên">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Footer buttons-->
+                        <div class="text-center pad-rgt mar-btm">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </form>
+                </div>
+                <!--===================================================-->
+                <!-- End of Main Form Wizard -->
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Areas/Admin/Content/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/demo/form-wizard.js"></script>
+}

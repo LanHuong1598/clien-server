@@ -1,0 +1,252 @@
+﻿@using BELibrary.Entity
+@using BELibrary.Utils
+@model List<Category>
+@{
+    ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!--List-->
+<div class="panel">
+    <div class="panel-body">
+
+        <div class="pad-btm form-inline">
+            <div class="row">
+                <div class="col-sm-6 table-toolbar-left">
+                    <button data-target="#creation-modal" data-toggle="modal" id="demo-btn-addrow" class="btn btn-success"><i class="demo-pli-add"></i> Thêm</button>
+                </div>
+                <div class="col-sm-6 table-toolbar-right">
+                    <div class="form-group">
+                        <input id="demo-input-search2" type="text" placeholder="Tìm kiếm" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tên </th>
+                        <th class="text-center">Đơn vị </th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                    {
+                        <tr id="row_@item.value.Id">
+                            <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                            <td class="text-center">@item.value.Name</td>
+                            <td class="text-center">@item.value.Unit</td>
+                            <td class="text-center">
+                                <button class="btn btn-info btn-icon" onclick="openEditingModal('@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.Name')"><i class="demo-psi-recycling icon-lg"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--Create-->
+<div class="modal fade" id="creation-modal" role="dialog" tabindex="-1" aria-labelledby="create" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="creation-form" class="form-horizontal" method="post">
+                <!--Modal header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                    <h4 class="modal-title">Thêm mới @ViewBag.Element</h4>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <input type="hidden" name="isEdit" value="false" />
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Tên</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" name="Name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Đơn vị</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" name="Unit" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Mô tả</label>
+                        <div class="col-lg-7">
+                            <textarea class="form-control" name="Description" rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Đóng</button>
+                    <button class="btn btn-success" type="submit">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Edit-->
+<div class="modal fade" id="editing-modal" role="dialog" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editing-form" class="form-horizontal" action="#" method="post">
+                <!--Modal header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                    <h4 class="modal-title">Chỉnh sửa @ViewBag.Element</h4>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <input type="hidden" name="Id" />
+                    <input type="hidden" name="isEdit" value="true" />
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Tên</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" name="Name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Đơn vị</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" name="Unit" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Mô tả</label>
+                        <div class="col-lg-7">
+                            <textarea class="form-control" name="Description" rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Đóng</button>
+                    <button class="btn btn-success" type="submit">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Script-->
+@section Scripts {
+    <script>
+        const baseUrl = "/admin/category";
+        // Valid
+        const fields = {
+            Name: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Tên loại phim là cần thiết và không để trống!'
+                    }
+                }
+            }
+        }
+        validator.valid('editing-form', fields, (e) => {
+            e.preventDefault();
+            var formData = new FormData(document.getElementById("editing-form"));
+            ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`, formData,
+                (response) => {
+                    if (response.status) {
+                        notify.push(response.mess, notify.EType.SUCCESS);
+                        notify.loading();
+
+                        $('#editing-modal').modal('hide');
+                        setTimeout(function () {
+                            window.location.href = window.location.pathname;
+                        }, 3000);
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                },
+                (jqXHR, textStatus) => {
+                    let mess = "Request failed: " + textStatus;
+                    notify.push(mess, notify.EType.DANGER);
+
+                }
+            );
+
+        });
+        validator.valid('creation-form', fields, (e) => {
+            e.preventDefault();
+
+            var formData = new FormData(document.getElementById('creation-form'));
+            ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`, formData,
+                (response) => {
+                    if (response.status) {
+                        notify.push(response.mess, notify.EType.SUCCESS);
+                        notify.loading();
+                        $('#editing-modal').modal('hide');
+                        setTimeout(function () {
+                            window.location.href = window.location.pathname;
+                        }, 3000);
+
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                },
+                (jqXHR, textStatus) => {
+                    let mess = "Request failed: " + textStatus;
+                    notify.push(mess, notify.EType.DANGER);
+                }
+            );
+        });
+
+        //Edit
+        function openEditingModal(_id) {
+            ajax.get(`${baseUrl}/GetJson`, { id: _id },
+                (response) => {
+                    if (response.status) {
+                        var obj = response.data;
+                        $('#editing-form input[name="Name"]').val(obj.Name);
+                        $('#editing-form input[name="Id"]').val(obj.Id);
+                        $('#editing-form input[name="Unit"]').val(obj.Unit);
+                        $('#editing-form input[name="Description"]').val(obj.Description);
+                        $('#editing-modal').modal('show');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                },
+                (jqXHR, textStatus) => {
+                    let mess = "Request failed: " + textStatus;
+                    notify.push(mess, notify.EType.DANGER);
+
+                }
+            );
+        }
+
+        //Del
+        function deleteElement(_id, name) {
+            var mess = 'Xác nhận <b>xóa</b> bản ghi <b>' + name + '</b>';
+            bootbox.confirm(mess, function (result) {
+                if (result) {
+                    ajax.del(`${baseUrl}/del`, { id: _id },
+                        (response) => {
+                            if (response.status) {
+                                notify.push(response.mess, notify.EType.SUCCESS);
+                                $("#row_" + _id).remove();
+                            } else {
+                                notify.push(mess, notify.EType.DANGER);
+                            }
+                        },
+                        (jqXHR, textStatus) => {
+                            let mess = "Request failed: " + textStatus;
+                            notify.push(mess, notify.EType.DANGER);
+
+                        }
+                    )
+                }
+            });
+        }
+    </script>
+}

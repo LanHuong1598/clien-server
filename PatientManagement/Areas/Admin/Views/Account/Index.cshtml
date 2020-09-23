@@ -1,0 +1,333 @@
+﻿@using BELibrary.Core.Utils
+@using BELibrary.Entity
+@using BELibrary.Utils
+
+@model List<Account>
+@{
+    ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    .select2-container {
+        z-index: 99999;
+        width: 100% !important;
+    }
+</style>
+<!--List-->
+<div class="panel">
+    <div class="panel-body">
+        <div class="pad-btm form-inline">
+            <div class="row">
+                <div class="col-sm-6 table-toolbar-left">
+                    <button data-toggle="modal" onclick="openModal(false)" class="btn btn-success"><i class="demo-pli-add"></i> Thêm</button>
+                </div>
+                <div class="col-sm-6 table-toolbar-right">
+                    <div class="form-group">
+                        <input id="demo-input-search2" type="text" placeholder="Tìm kiếm" class="form-control" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Username </th>
+                        <th class="text-center">Họ Tên</th>
+                        <th class="text-center">Quyền</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                    {
+                        <tr id="row_@item.value.Id">
+                            <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                            <td class="text-center">@item.value.UserName</td>
+                            <td class="text-center">@item.value.FullName</td>
+                            <td class="text-center">@(RoleKey.GetRole(item.value.Role)) </td>
+                            <td class="text-center">
+                                <button class="btn btn-info btn-icon" onclick="openModal(true,'@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.FullName')"><i class="demo-psi-recycling icon-lg"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--Create-->
+<div class="modal fade" id="data-modal" role="dialog" tabindex="-1" aria-labelledby="create" aria-hidden="true">
+    <div class="modal-dialog" style="padding: 5% 0;">
+        <div class="modal-content">
+            <form id="modal-form" class="form-horizontal" method="post">
+                <input type="hidden" name="Id" />
+                <input type="hidden" name="isEdit" />
+                <!--Modal header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                    <h4 class="modal-title">@ViewBag.Element</h4>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <input type="hidden" name="isEdit" value="false" />
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Username</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" name="UserName" placeholder="Tên đăng nhập" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Họ tên</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="text" class="form-control" name="FullName" placeholder="Nhập họ tên" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Quyền</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            @Html.DropDownList("Role", (SelectList)ViewBag.Roles,
+                                new { @class = "form-control", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group" id="slPatient">
+                        <label class="col-lg-3 control-label">Bệnh nhân</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            @Html.DropDownList("PatientId", (SelectList)ViewBag.Patients,
+                                new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Phone</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="text" class="form-control" name="Phone" placeholder="Nhập phone" required>
+                        </div>
+                    </div>
+                    <div class="form-group edit-modal">
+                        <label class="col-lg-3 control-label " for="demo-hor-inputpass">Giới tính </label>
+                        <div class="col-lg-7">
+                            <input class="toggle-switch" id="demo-allow-comments" name="Gender" type="checkbox">
+                            <label for="demo-allow-comments"></label>
+                            <span style="padding: 1px 0 0 10px" id="status"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group" id="oldPass">
+                        <label class="col-lg-3 control-label">Mật khẩu cũ</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="text" class="form-control" name="OldPassword" placeholder="Mật khẩu cũ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Mật khẩu</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="text" class="form-control" name="Password" placeholder="Mật khẩu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Nhập lại mật khẩu</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="text" class="form-control" name="RePassword" placeholder="Nhập lại mật khẩu">
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Đóng</button>
+                    <button class="btn btn-success" type="submit">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Script-->
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+
+            $('#oldPass').hide();
+            $('#modal-form input[name="Username"]').prop('disabled', true);
+            $("#PatientId").select2();
+            $("#slPatient").hide();
+
+            const isChecked = $("#demo-allow-comments").is(":checked");
+            if (isChecked) {
+                $("#status").text("Nam");
+            } else {
+                $("#status").text("Nữ");
+            }
+        });
+
+        $("#demo-allow-comments").change(function () {
+            const isChecked = $("#demo-allow-comments").is(":checked");
+            if (isChecked) {
+                $("#status").text("Nam");
+            } else {
+                $("#status").text("Nữ");
+            }
+        });
+
+        $("#Role").change(function () {
+            const role = $("#Role").val();
+            if (role === "3") {
+                $("#slPatient").show();
+            }
+        });
+
+        const baseUrl = "/admin/account";
+        // Valid
+        const fields = {
+            UserName: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Tên đăng nhập không được để trống!'
+                    }
+                }
+            },
+            FullName: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Họ tên không được để trống!'
+                    }
+                }
+            },
+            Role: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Role không được để trống!'
+                    }
+                }
+            },
+            PhoneNumber: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Phone không được để trống!'
+                    }
+                }
+            }
+        }
+
+        validator.valid('modal-form',
+            fields,
+            (e) => {
+                e.preventDefault();
+                var formData = new FormData(document.getElementById('modal-form'));
+                const isChecked = $("#demo-allow-comments").is(":checked");
+                const isEdit = $('#modal-form input[name="isEdit"]').val();
+
+                formData.set("Gender", isChecked);
+                if (isEdit) {
+                    formData.set("OldPassword", "");
+                }
+
+                ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`,
+                    formData,
+                    (response) => {
+                        if (response.status) {
+                            notify.push(response.mess, notify.EType.SUCCESS);
+                            notify.loading();
+                            $('#data-modal').modal('hide'); 
+                            window.location.href = window.location.pathname;
+                             
+                        } else {
+                            notify.push(response.mess, notify.EType.DANGER);
+                            $(':input[type="submit"]').prop("disabled", false);
+                        }
+                    },
+                    (jqXhr, textStatus) => {
+                        const mess = `Request failed: ${textStatus}`;
+                        notify.push(mess, notify.EType.DANGER);
+                        $(':input[type="submit"]').prop("disabled", false);
+                    }
+                );
+            });
+
+        //Edit
+        function openModal(isEdit, id) {
+            $('#modal-form')[0].reset();
+
+            if (!isEdit) {
+                $('#modal-form input[name="isEdit"]').val(false);
+                $('#data-modal').modal('show');
+                $('#modal-form input[name="Id"]').val("");
+
+                $('#modal-form input[name="UserName"]').prop('disabled', false);
+                $('#oldPass').hide();
+                return;
+            }
+            $('#modal-form input[name="UserName"]').prop('disabled', true);
+            $('#oldPass').show();
+            ajax.get(`${baseUrl}/GetJson`,
+                { id: id },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        $('#modal-form input[name="FullName"]').val(obj.FullName);
+                        $('#modal-form input[name="UserName"]').val(obj.UserName);
+                        $('#modal-form input[name="LinkAvatar"]').val(obj.LinkAvatar);
+                        $('#modal-form input[name="Phone"]').val(obj.Phone);
+                        $('#modal-form input[name="Username"]').val(obj.Username);
+                        $('#modal-form input[name="Gender"]').prop('checked', obj.Gender);
+                        $('#modal-form select[name="Role"]').val(obj.Role);
+                        console.log(obj.Role);
+                        if (obj.Role === 3) {
+                            $("#slPatient").show();
+                            $("#PatientId").val(obj.PatientId);
+                            $('#PatientId').select2().trigger('change');
+                        }
+                        if (obj.Gender) {
+                            $("#status").text("Nam");
+                        } else {
+                            $("#status").text("Nữ");
+                        }
+
+                        $('#modal-form input[name="Id"]').val(obj.Id);
+                        $('#modal-form input[name="isEdit"]').val(true);
+                        $('#data-modal').modal('show');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                }
+            );
+        }
+
+        //Del
+        function deleteElement(id, name) {
+            var mess = `Xác nhận <b>xóa</b> bản ghi <b>${name}</b>`;
+            bootbox.confirm(mess,
+                function (result) {
+                    if (result) {
+                        ajax.del(`${baseUrl}/del`,
+                            { id: id },
+                            (response) => {
+                                if (response.status) {
+                                    notify.push(response.mess, notify.EType.SUCCESS);
+                                    $(`#row_${id}`).remove();
+                                } else {
+                                    notify.push(mess, notify.EType.DANGER);
+                                    $(':input[type="submit"]').prop("disabled", false);
+                                }
+                            },
+                            (jqXhr, textStatus) => {
+                                const mess = `Request failed: ${textStatus}`;
+                                notify.push(mess, notify.EType.DANGER);
+                            }
+                        );
+                    }
+                });
+        }
+    </script>
+}

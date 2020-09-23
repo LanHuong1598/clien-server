@@ -1,0 +1,410 @@
+﻿@using BELibrary.Entity
+@{
+    ViewBag.Title = "Bảng điều khiển";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var currentYear = DateTime.Now.Year;
+    var patientsNew = (List<Patient>)ViewBag.PatientsNew;
+}
+
+@section CSS{
+
+    <!--Morris.js [ OPTIONAL ]-->
+    <link href="/Areas/Admin/Content/plugins/morris-js/morris.min.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="col-lg-7">
+
+        <!--Network Line Chart-->
+        <!--===================================================-->
+        <div id="demo-panel-network" class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+                    <input type="number" placeholder="Textbox" value="@currentYear" id="year" class="form-control">
+                </div>
+                <h3 class="panel-title">Số lượng bệnh nhân thăm khám</h3>
+            </div>
+            <div class="pad-all">
+                <div id="demo-morris-area-legend" class="text-center"></div>
+                <div id="demo-morris-area" style="height:250px"></div>
+            </div>
+        </div>
+        <!--===================================================-->
+        <!--End network line chart-->
+        <!--Chart information-->
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-semibold text-uppercase text-main">Thời tiết</p>
+                    <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="HÀ NỘI" data-label_2="Thời tiết" data-theme="original">Thời thiết HÀ NỘI </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+
+                <!--Sparkline Area Chart-->
+                <div class="panel panel-info panel-colorful">
+                    <div class="pad-all">
+                        <p class="text-lg text-semibold"><i class="demo-pli-add-user icon-fw"></i>Bệnh nhân</p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.PatientTodayCount</span> Hôm nay
+                        </p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.PatientMonthCount</span> Tháng này
+                        </p>
+                    </div>
+                    <div class="pad-top text-center">
+                        <!--Placeholder-->
+                        <div id="demo-sparkline-area" class="sparklines-full-content"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-6">
+
+                <!--Sparkline Line Chart-->
+                <div class="panel panel-danger panel-colorful">
+                    <div class="pad-all">
+                        <p class="text-lg text-semibold"><i class="fa fa-hotel icon-fw"></i>Vật tư</p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.ItemTodayCount</span> Hôm nay
+                        </p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.ItemMonthCount</span> Tháng này
+                        </p>
+                    </div>
+                    <div class="pad-top text-center">
+
+                        <!--Placeholder-->
+                        <div id="demo-sparkline-line" class="sparklines-full-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+
+                <!--Sparkline bar chart -->
+                <div class="panel panel-mint panel-colorful">
+                    <div class="pad-all">
+                        <p class="text-lg text-semibold"><i class="fa fa-cubes icon-fw"></i> Đơn thuốc</p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.PrescriptionTodayCount </span> Hôm nay
+                        </p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.PrescriptionTodayCount </span> Tháng này
+                        </p>
+                    </div>
+                    <div class="text-center">
+
+                        <!--Placeholder-->
+                        <div id="demo-sparkline-bar" class="box-inline"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-6">
+
+                <!--Sparkline pie chart -->
+                <div class="panel panel-warning panel-colorful">
+                    <div class="pad-all">
+                        <p class="text-lg text-semibold"><i class="demo-pli-file-word icon-fw"></i> Tệp tin</p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.DocumentTodayCount</span> Hôm nay
+                        </p>
+                        <p class="mar-no">
+                            <span class="pull-right text-bold">@ViewBag.DocumentMonthCount</span> Tháng này
+                        </p>
+                    </div>
+                    <div class="text-center">
+
+                        <!--Placeholder-->
+                        <div id="demo-sparkline-bar" class="box-inline"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Extra Small Weather Widget-->
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!-- Donut Chart -->
+        <!---------------------------------->
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+                    @Html.DropDownList("CategoryId", (SelectList)ViewBag.Categories,
+                        new { @class = "form-control", @required = "required" })
+                </div>
+                <h3 class="panel-title">Thống kê vật tư theo danh mục</h3>
+            </div>
+            <div class="panel-body">
+                <div id="demo-morris-donut" class="morris-donut" style="height: 262px"></div>
+            </div>
+        </div>
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!--End Extra Small Weather Widget-->
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-warning panel-colorful media middle pad-all">
+            <div class="media-left">
+                <div class="pad-hor">
+                    <i class="demo-pli-file-word icon-3x"></i>
+                </div>
+            </div>
+            <div class="media-body">
+                <p class="text-2x mar-no text-semibold">@ViewBag.DocumentCount</p>
+                <p class="mar-no">Tập tin</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-info panel-colorful media middle pad-all">
+            <div class="media-left">
+                <div class="pad-hor">
+                    <i class="demo-pli-add-user icon-3x"></i>
+                </div>
+            </div>
+            <div class="media-body">
+                <p class="text-2x mar-no text-semibold">@ViewBag.PatientCount</p>
+                <p class="mar-no">Bệnh nhân</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-mint panel-colorful media middle pad-all">
+            <div class="media-left">
+                <div class="pad-hor">
+                    <i class="fa fa-cubes icon-sm icon-3x" style="font-size: 3em;"></i>
+                </div>
+            </div>
+            <div class="media-body">
+                <p class="text-2x mar-no text-semibold">@ViewBag.PrescriptionCount</p>
+                <p class="mar-no">Đơn thuốc</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-danger panel-colorful media middle pad-all">
+            <div class="media-left">
+                <div class="pad-hor">
+                    <i class="fa fa-bed icon-3x" style="font-size: 3em;"></i>
+                </div>
+            </div>
+            <div class="media-body">
+                <p class="text-2x mar-no text-semibold">@ViewBag.ItemCount</p>
+                <p class="mar-no">Vật tư y tế</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Danh sách bệnh nhân mới</h3>
+            </div>
+
+            <!--Data Table-->
+            <!--===================================================-->
+            <div class="panel-body">
+                <div class="pad-btm form-inline">
+                    <div class="row">
+                        <div class="col-sm-6 table-toolbar-left">
+                            <a class="btn btn-purple" href="/admin/patient/create"><i class="demo-pli-add icon-fw"></i>Add</a>
+                            <button class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></button>
+                            <div class="btn-group">
+                                <button class="btn btn-default"><i class="demo-pli-information icon-lg"></i></button>
+                                <button class="btn btn-default"><i class="demo-pli-trash icon-lg"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 table-toolbar-right">
+                            <div class="form-group">
+                                <input type="text" autocomplete="off" class="form-control" placeholder="Search" id="demo-input-search2">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-default"><i class="demo-pli-download-from-cloud icon-lg"></i></button>
+                                <div class="btn-group dropdown">
+                                    <button class="btn btn-default btn-active-primary dropdown-toggle" data-toggle="dropdown">
+                                        <i class="demo-pli-dot-vertical icon-lg"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="tblData">
+                        <thead>
+                            <tr>
+                                <th class="text-center">STT</th>
+                                <th class="text-center">Mã BN</th>
+                                <th class="text-center">Họ Tên</th>
+                                <th class="text-center">Mã căn cước</th>
+                                <th class="text-center">Ngày sinh</th>
+                                <th class="text-center">Giới tính</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in patientsNew.Select((value, i) => new { i, value }))
+                            {
+                                <tr id="row_@item.value.Id">
+                                    <td class="text-center">@(item.i + 1)</td>
+                                    <td class="text-center"><span class="badge badge-success">@item.value.PatientCode</span></td>
+                                    <td class="text-center">@item.value.FullName</td>
+                                    <td class="text-center">@item.value.IndentificationCardId</td>
+                                    <td class="text-center">@item.value.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">@(item.value.Gender ? "Nam" : "Nữ")</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-info btn-icon" title="Xem bệnh án" onclick="openRecord('@item.value.Id')"><i class="fa fa-calendar  icon-lg"></i></button>
+                                        <button class="btn btn-info btn-icon" title="Sửa bệnh án" onclick="openEditing('@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                        @*<button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.FullName')"><i class="demo-psi-recycling icon-lg"></i></button>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!--End Data Table-->
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel">
+            <!--Chart information-->
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="flourish-embed flourish-map" data-src="story/229998">
+                                <script src="https://public.flourish.studio/resources/embed.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/Areas/Admin/Content/plugins/flot-charts/jquery.flot.min.js"></script>
+    <script src="/Areas/Admin/Content/plugins/flot-charts/jquery.flot.resize.min.js"></script>
+    <script src="/Areas/Admin/Content/plugins/flot-charts/jquery.flot.tooltip.min.js"></script>
+
+    <!--Sparkline [ OPTIONAL ]-->
+    <script src="/Areas/Admin/Content/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!--Specify page [ SAMPLE ]-->
+    <script src="/Areas/Admin/Content/js/demo/dashboard.js"></script>
+
+    <!--Morris.js [ OPTIONAL ]-->
+    <script src="/Areas/Admin/Content/plugins/morris-js/morris.min.js"></script>
+    <script src="/Areas/Admin/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/live/chart.statistical.js"></script>
+
+    <script>
+
+        // ================== START - Chart ==================
+
+        const baseUrl = `/Admin/Statistical`;
+
+        function getCharData(year) {
+            notify.loading();
+            ajax.get(`${baseUrl}/GetRegByYear`,
+                {
+                    year: year
+                },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        chart.initChart(obj,'demo-morris-area', 'demo-morris-area-legend');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                    notify.done();
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                    notify.done();
+                }
+            );
+        }
+
+        $("#year").change(function () {
+            $("#demo-morris-area").empty();
+            $('#demo-morris-area-legend').empty();
+            const year = $(this).val();
+            getCharData(year);
+        });
+
+        getCharData(@currentYear);
+
+        function getCharDataDoughnut(categoryId) {
+            notify.loading();
+            ajax.get(`${baseUrl}/GetItemByCategory`,
+                {
+                    categoryId: categoryId
+                },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        chart.initChartDoughnut(obj, 'demo-morris-donut');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                    notify.done();
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                    notify.done();
+                }
+            );
+        }
+        $("#CategoryId").change(function () {
+            $("#demo-morris-donut").empty();
+            const categoryId = $(this).val();
+            getCharDataDoughnut(categoryId);
+        });
+
+        getCharDataDoughnut($("#CategoryId").val());
+        // ================== END - Chart ==================
+
+        const basePatientUrl = "/admin/Patient";
+
+        //Edit
+        function openEditing(id) {
+            notify.loading();
+            window.location.href = `${basePatientUrl}/update?id=${id}`;
+        }
+        //Edit
+        function openRecord(id) {
+            notify.loading();
+            window.location.href = `/admin/record?patientId=${id}`;
+        }
+    </script>
+    <script>
+        !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+    </script>
+
+}
