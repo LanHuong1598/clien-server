@@ -1,0 +1,227 @@
+﻿@using BELibrary.Entity
+@using PatientManagement.Handler
+@{
+    ViewBag.Title = "Sửa trang cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = CookiesManage.GetUser();
+}
+<style>
+
+    .bg-black-333 {
+        background-color: darkseagreen;
+        margin-top: 10px;
+        padding-top: 10px;
+        padding-bottom: 32px;
+        color: white;
+    }
+
+    .full-name {
+        padding-top: 12px;
+        color: white;
+    }
+
+    .styled-icons li {
+        display: inline-block;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .styled-icons.icon-sm a {
+        font-size: 13px;
+        height: 30px;
+        line-height: 30px;
+        margin: 2px 7px 2px 0;
+        width: 30px;
+    }
+
+    .styled-icons.icon-circled a {
+        border-radius: 50%;
+    }
+
+    .styled-icons.icon-gray a {
+        background-color: #eeeeee;
+        color: #555555;
+        display: block;
+        font-size: 18px;
+        height: 36px;
+        line-height: 36px;
+        width: 36px;
+    }
+
+    .mb-15 {
+        margin-bottom: 15px !important;
+    }
+
+    .mt-15 {
+        margin-top: 15px !important;
+    }
+
+    ul, ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+
+<!-- Start main-content -->
+<div class="main-content" style="padding-top:85px">
+
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/content/images/bg/bg3.jpg">
+        <div class="container pt-70 pb-20">
+            <!-- Section Content -->
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="title text-white">Sửa trang cá nhân</h2>
+                        <ol class="breadcrumb text-left text-black mt-10">
+                            <li><a href="/">Trang chủ</a></li>
+                            <li class="active text-gray-silver">@user.FullName </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Doctor Details -->
+    <section class="">
+        <div class="container">
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-sx-12 col-sm-4 col-md-4">
+                        <div class="doctor-thumb">
+                            <img class="img img-responsive" src="@user.LinkAvata" alt="">
+                        </div>
+                        <div class="info p-20 bg-black-333">
+                            <h4 class="full-name text-center">@user.FullName</h4>
+                            <ul class="list angle-double-right m-0 text-center">
+                                <li class="mt-0 text-gray-silver"><strong class="text-gray-lighter">Email</strong><br> @user.Email</li>
+                                <li class="text-gray-silver"><strong class="text-gray-lighter">Phone</strong><br> @user.Phone</li>
+                            </ul>
+                            <ul class="styled-icons icon-gray icon-circled icon-sm mt-15 mb-15 text-center">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            </ul>
+                            <div class="text-center">
+                                <a class="btn btn-info btn-flat mt-10 mb-sm-30" href="/account/edit">Sửa</a>
+                                <a class="btn btn-danger btn-flat mt-10 mb-sm-30" href="/account/logout">Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8">
+                        <form name="reg-form" class="register-form" method="post" id="frmEdit">
+                            <div class="icon-box mb-0 p-0">
+                                <a href="#" class="icon icon-bordered icon-rounded icon-sm pull-left mb-0 mr-10">
+                                    <i class="pe-7s-users"></i>
+                                </a>
+                                <h4 class="text-gray pt-10 mt-0 mb-30">Sửa trang cá nhân</h4>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="form_name">Tên</label>
+                                    <input name="FullName" class="form-control" type="text" required value="@user.FullName">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="form_gender">Giới tính</label>
+                                    <select name="Gender" class="form-control" required value="@user.Gender.ToString()">
+                                        <option>---- Lựa chọn ----</option>
+                                        <option value="True" @(user.Gender ? "selected" : "")>Nam</option>
+                                        <option value="False" @(!user.Gender ? "selected" : "")>Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="form_choose_username">Tên đăng nhập</label>
+                                    <input id="form_choose_username" name="Username" class="form-control" type="text" required disabled value="@user.Username">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="form_chooseDateOfBirth">Ngày sinh</label>
+                                    <input id="form_choose_DateOfBirth" name="DateOfBirth" class="form-control" type="date" required value="@user.DateOfBirth.ToString("yyyy-MM-dd")">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Emal</label>
+                                    <input name="Email" class="form-control" type="email" required value="@user.Email">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Phone</label>
+                                    <input name="Phone" class="form-control" type="text" value="@user.Phone">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="exampleInputFile">Ảnh đại diện</label>
+                                    <input type="file" id="file" name="avataUpload">
+                                    <p class="help-block">Upload ảnh đại diện.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-success btn-lg btn-block mt-15" type="submit" id="btnReg">Cập nhật</button>
+                            </div>
+                        </form>
+
+                        <hr class="mt-70 mb-70">
+
+                        <form name="editprofile-form" method="post" id="updatePass">
+                            <div class="icon-box mb-0 p-0">
+                                <a href="#" class="icon icon-bordered icon-rounded icon-sm pull-left mb-0 mr-10" style="padding-right: 10px;">
+                                    <i class="fa fa-key" style=""></i>
+                                </a>
+                                <h4 class="text-gray pt-10 mt-0 mb-30">Đổi mật khẩu</h4>
+                            </div>
+                            <hr>
+                            <p class="text-gray">
+                                Mật khẩu cần thay đổi thường xuyên vì lý do bảo mật.
+                            </p>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Mật khẩu</label>
+                                    <input name="NewPassword" class="form-control" type="password">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input name="RePassword" class="form-control" type="password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Mật khẩu cũ</label>
+                                    <input name="OldPassword" class="form-control" type="password">
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary btn-sm mt-15 " type="submit">Cập nhật</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- end main-content -->
+@section Scripts {
+    <script src="~/Scripts/js/live/edit.account.js"></script>
+}

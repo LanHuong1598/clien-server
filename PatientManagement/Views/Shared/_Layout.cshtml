@@ -1,0 +1,141 @@
+﻿<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>Health care - @(ViewBag.Title ?? "Trang chủ")</title>
+    <meta name="description" content="zFrame Team">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="zFrame">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="~/Content/images/favicon.png" />
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="telephone=no" name="format-detection">
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Content/alertify/alertify.min.css" rel="stylesheet" />
+
+    <link href="~/Content/Style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    @RenderSection("CSS", required: false)
+    <style>
+        .ajs-message {
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+
+        <!-- Header -->
+        @Html.Partial("_PartialHeader")
+
+        <!-- Start main-content -->
+        @RenderBody()
+
+        <div class="clearfix"></div>
+        <!-- Footer -->
+        @Html.Partial("_PartialFooter")
+    </div>
+
+    <!-- Start Button Scroll UP -->
+    <div class="Scroll-up">
+        <i class="fa fa-stethoscope" aria-hidden="true"></i>
+    </div>
+    <!-- End Button Scroll UP -->
+    <!-- JavaScript-->
+    <!-- jQuery 1.9.1-->
+    <script src="~/Scripts/scripts.js"></script>
+    <script src="~/Scripts/page.js"></script>
+    <script type="text/javascript">
+        jQuery(document).on("ready", function () {
+
+            jQuery('.tp-banner').show().revolution({
+                dottedOverlay: "none",
+                delay: 10000,
+                startwidth: 1140,
+                startheight: 550,
+                hideThumbs: 200,
+
+                thumbWidth: 100,
+                thumbHeight: 50,
+                thumbAmount: 5,
+
+                navigationType: "bullet",
+
+                touchenabled: "on",
+                onHoverStop: "off",
+
+                swipe_velocity: 0.7,
+                swipe_min_touches: 1,
+                swipe_max_touches: 1,
+                drag_block_vertical: false,
+
+                parallax: "mouse",
+                parallaxBgFreeze: "on",
+                parallaxLevels: [7, 4, 3, 2, 5, 4, 3, 2, 1, 0],
+
+                keyboardNavigation: "off",
+
+                navigationHAlign: "center",
+                navigationVAlign: "bottom",
+                navigationHOffset: 0,
+                navigationVOffset: "center",
+
+                shadow: 0,
+
+                spinner: "spinner4",
+
+                stopLoop: "off",
+                stopAfterLoops: -1,
+                stopAtSlide: -1,
+
+                shuffle: "off",
+
+                autoHeight: "off",
+                forceFullWidth: "off",
+
+                hideThumbsOnMobile: "off",
+                hideNavDelayOnMobile: 1500,
+                hideBulletsOnMobile: "off",
+                hideArrowsOnMobile: "off",
+                hideThumbsUnderResolution: 0,
+
+                hideSliderAtLimit: 0,
+                hideCaptionAtLimit: 0,
+                hideAllCaptionAtLilmit: 0,
+                startWithSlide: 0,
+                fullScreenOffsetContainer: ".header"
+            });
+
+        }); //ready
+
+        //isotope
+        jQuery(document).on("ready", function () {
+            var $container = $('.iso-call');
+            // init
+            $container.isotope({
+                // options
+                itemSelector: '.services-project, .gallery-post',
+                masonry: {
+                    columnWidth: '.default-size'
+                }
+            });
+        }); //ready
+    </script>
+
+    <script src="~/Content/plugin/notifyjs/lobibox.min.js"></script>
+
+    <script src="~/Scripts/js/base/common.js"></script>
+
+    <script src="~/Scripts/alertify.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98A12BEB-3EA8-448A-BE64-F67242449103}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BELibrary</RootNamespace>
+    <AssemblyName>BELibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.6.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.57.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.57\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.12.17.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.12.17\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.Expressions.Eval, Version=3.1.8.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.Expressions.Eval.3.1.8\lib\net45\Z.Expressions.Eval.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core.Entity\IUnitOfWork.cs" />
+    <Compile Include="Core.Entity\Repositories\IAccountRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IAttachmentRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IAttachmentAssignRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\ICategoryRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IDetailPrescriptionRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IDetailRecordRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IFacultyRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IItemRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IMedicineRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IDoctorRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IPatientRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IMedicalSupplyRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IPrescriptionRepository.cs" />
+    <Compile Include="Core.Entity\Repositories\IRecordRepository.cs" />
+    <Compile Include="Core.Entity\UnitOfWork.cs" />
+    <Compile Include="Core.Utils\MailUtils.cs" />
+    <Compile Include="Core.Utils\CodeUtils.cs" />
+    <Compile Include="Core.Utils\CryptorEngine.cs" />
+    <Compile Include="Core.Utils\StringHelper.cs" />
+    <Compile Include="Core.Utils\VariableExtensions.cs" />
+    <Compile Include="DbContext\PatientManagementDbContext.cs" />
+    <Compile Include="Entity\Account.cs" />
+    <Compile Include="Entity\Attachment.cs" />
+    <Compile Include="Entity\AttachmentAssign.cs" />
+    <Compile Include="Entity\Category.cs" />
+    <Compile Include="Entity\DetailPrescription.cs" />
+    <Compile Include="Entity\DetailRecord.cs" />
+    <Compile Include="Entity\Doctor.cs" />
+    <Compile Include="Entity\Faculty.cs" />
+    <Compile Include="Entity\Item.cs" />
+    <Compile Include="Entity\MedicalSupply.cs" />
+    <Compile Include="Entity\Medicine.cs" />
+    <Compile Include="Entity\Patient.cs" />
+    <Compile Include="Entity\Prescription.cs" />
+    <Compile Include="Entity\Record.cs" />
+    <Compile Include="Mapping\MappingProfile.cs" />
+    <Compile Include="Migrations\202004181928099_Init_Database.cs" />
+    <Compile Include="Migrations\202004181928099_Init_Database.designer.cs">
+      <DependentUpon>202004181928099_Init_Database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005120103185_Add_New_Table.cs" />
+    <Compile Include="Migrations\202005120103185_Add_New_Table.designer.cs">
+      <DependentUpon>202005120103185_Add_New_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005160816149_Change_Required_Column_Table_Record.cs" />
+    <Compile Include="Migrations\202005160816149_Change_Required_Column_Table_Record.designer.cs">
+      <DependentUpon>202005160816149_Change_Required_Column_Table_Record.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005160953071_Add_New_Table_Doctor_Faculty.cs" />
+    <Compile Include="Migrations\202005160953071_Add_New_Table_Doctor_Faculty.designer.cs">
+      <DependentUpon>202005160953071_Add_New_Table_Doctor_Faculty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005161448083_Add_DoctorId_To_Record_Table.cs" />
+    <Compile Include="Migrations\202005161448083_Add_DoctorId_To_Record_Table.designer.cs">
+      <DependentUpon>202005161448083_Add_DoctorId_To_Record_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005161638293_Add_DoctorId_To_DetailRecord_Table.cs" />
+    <Compile Include="Migrations\202005161638293_Add_DoctorId_To_DetailRecord_Table.designer.cs">
+      <DependentUpon>202005161638293_Add_DoctorId_To_DetailRecord_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005161751470_Change_Prescription_Allow_Null_DetailRecord_Table.cs" />
+    <Compile Include="Migrations\202005161751470_Change_Prescription_Allow_Null_DetailRecord_Table.designer.cs">
+      <DependentUpon>202005161751470_Change_Prescription_Allow_Null_DetailRecord_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005170248436_Add_FK_AttachmentAssign.cs" />
+    <Compile Include="Migrations\202005170248436_Add_FK_AttachmentAssign.designer.cs">
+      <DependentUpon>202005170248436_Add_FK_AttachmentAssign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005170251229_Add_Name_Attachment.cs" />
+    <Compile Include="Migrations\202005170251229_Add_Name_Attachment.designer.cs">
+      <DependentUpon>202005170251229_Add_Name_Attachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005171030264_Modify_DetailPrescription_Prescription.cs" />
+    <Compile Include="Migrations\202005171030264_Modify_DetailPrescription_Prescription.designer.cs">
+      <DependentUpon>202005171030264_Modify_DetailPrescription_Prescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005171056129_Add_Unit_DetailPrescription_Table.cs" />
+    <Compile Include="Migrations\202005171056129_Add_Unit_DetailPrescription_Table.designer.cs">
+      <DependentUpon>202005171056129_Add_Unit_DetailPrescription_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005171425566_Edit_Account_Table.cs" />
+    <Compile Include="Migrations\202005171425566_Edit_Account_Table.designer.cs">
+      <DependentUpon>202005171425566_Edit_Account_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005181335515_Add_Item_To_MedicalSupply.cs" />
+    <Compile Include="Migrations\202005181335515_Add_Item_To_MedicalSupply.designer.cs">
+      <DependentUpon>202005181335515_Add_Item_To_MedicalSupply.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005181346127_Add_Prop_To_MedicalSupply.cs" />
+    <Compile Include="Migrations\202005181346127_Add_Prop_To_MedicalSupply.designer.cs">
+      <DependentUpon>202005181346127_Add_Prop_To_MedicalSupply.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006020105447_Add_Status_To_Record_Table.cs" />
+    <Compile Include="Migrations\202006020105447_Add_Status_To_Record_Table.designer.cs">
+      <DependentUpon>202006020105447_Add_Status_To_Record_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006020116079_Edit_Status_To_Record_Table.cs" />
+    <Compile Include="Migrations\202006020116079_Edit_Status_To_Record_Table.designer.cs">
+      <DependentUpon>202006020116079_Edit_Status_To_Record_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006061349368_Add_Base_Tabel_Prop.cs" />
+    <Compile Include="Migrations\202006061349368_Add_Base_Tabel_Prop.designer.cs">
+      <DependentUpon>202006061349368_Add_Base_Tabel_Prop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Persistence\Repositories\AccountRepository.cs" />
+    <Compile Include="Persistence\Repositories\AttachmentRepository.cs" />
+    <Compile Include="Persistence\Repositories\AttachmentAssignRepository.cs" />
+    <Compile Include="Persistence\Repositories\CategoryRepository.cs" />
+    <Compile Include="Persistence\Repositories\DetailPrescriptionRepository.cs" />
+    <Compile Include="Persistence\Repositories\DetailRecordRepository.cs" />
+    <Compile Include="Persistence\Repositories\ItemRepository.cs" />
+    <Compile Include="Persistence\Repositories\MedicineRepository.cs" />
+    <Compile Include="Persistence\Repositories\MedicalSupplyRepository.cs" />
+    <Compile Include="Persistence\Repositories\DoctorRepository.cs" />
+    <Compile Include="Persistence\Repositories\FacultyRepository.cs" />
+    <Compile Include="Persistence\Repositories\PatientRepository.cs" />
+    <Compile Include="Persistence\Repositories\Repository.cs" />
+    <Compile Include="Persistence\Repositories\PrescriptionRepository.cs" />
+    <Compile Include="Persistence\Repositories\RecordRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202004181928099_Init_Database.resx">
+      <DependentUpon>202004181928099_Init_Database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005120103185_Add_New_Table.resx">
+      <DependentUpon>202005120103185_Add_New_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005160816149_Change_Required_Column_Table_Record.resx">
+      <DependentUpon>202005160816149_Change_Required_Column_Table_Record.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005160953071_Add_New_Table_Doctor_Faculty.resx">
+      <DependentUpon>202005160953071_Add_New_Table_Doctor_Faculty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005161448083_Add_DoctorId_To_Record_Table.resx">
+      <DependentUpon>202005161448083_Add_DoctorId_To_Record_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005161638293_Add_DoctorId_To_DetailRecord_Table.resx">
+      <DependentUpon>202005161638293_Add_DoctorId_To_DetailRecord_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005161751470_Change_Prescription_Allow_Null_DetailRecord_Table.resx">
+      <DependentUpon>202005161751470_Change_Prescription_Allow_Null_DetailRecord_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005170248436_Add_FK_AttachmentAssign.resx">
+      <DependentUpon>202005170248436_Add_FK_AttachmentAssign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005170251229_Add_Name_Attachment.resx">
+      <DependentUpon>202005170251229_Add_Name_Attachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005171030264_Modify_DetailPrescription_Prescription.resx">
+      <DependentUpon>202005171030264_Modify_DetailPrescription_Prescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005171056129_Add_Unit_DetailPrescription_Table.resx">
+      <DependentUpon>202005171056129_Add_Unit_DetailPrescription_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005171425566_Edit_Account_Table.resx">
+      <DependentUpon>202005171425566_Edit_Account_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005181335515_Add_Item_To_MedicalSupply.resx">
+      <DependentUpon>202005181335515_Add_Item_To_MedicalSupply.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005181346127_Add_Prop_To_MedicalSupply.resx">
+      <DependentUpon>202005181346127_Add_Prop_To_MedicalSupply.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006020105447_Add_Status_To_Record_Table.resx">
+      <DependentUpon>202006020105447_Add_Status_To_Record_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006020116079_Edit_Status_To_Record_Table.resx">
+      <DependentUpon>202006020116079_Edit_Status_To_Record_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006061349368_Add_Base_Tabel_Prop.resx">
+      <DependentUpon>202006061349368_Add_Base_Tabel_Prop.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+</Project>

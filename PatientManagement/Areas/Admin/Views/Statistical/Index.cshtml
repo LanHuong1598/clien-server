@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var currentYear = DateTime.Now.Year;
+}
+
+@section CSS{
+
+    <!--Morris.js [ OPTIONAL ]-->
+    <link href="/Areas/Admin/Content/plugins/morris-js/morris.min.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="col-md-7">
+
+        <!-- Area Chart -->
+        <!---------------------------------->
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+                    <input type="number" placeholder="Textbox" value="@currentYear" id="year" class="form-control">
+                </div>
+                <h3 class="panel-title">Số lượng bệnh nhân thăm khám</h3>
+            </div>
+            <div class="pad-all">
+                <div id="demo-morris-area-legend" class="text-center"></div>
+                <div id="demo-morris-area" style="height:250px"></div>
+            </div>
+        </div>
+        <!---------------------------------->
+    </div>
+    <div class="col-md-5">
+
+        <!-- Donut Chart -->
+        <!---------------------------------->
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+                    @Html.DropDownList("CategoryId", (SelectList)ViewBag.Categories,
+                        new { @class = "form-control", @required = "required" })
+                </div>
+                <h3 class="panel-title">Số lượng bệnh nhân thăm khám</h3>
+            </div>
+            <div class="panel-body">
+                <div id="demo-morris-donut" class="morris-donut" style="height: 250px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!--Morris.js [ OPTIONAL ]-->
+    <script src="/Areas/Admin/Content/plugins/morris-js/morris.min.js"></script>
+    <script src="/Areas/Admin/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/live/chart.statistical.js"></script>
+
+    <script>
+        const baseUrl = `/Admin/Statistical`;
+
+        function getCharData(year) {
+            notify.loading();
+            ajax.get(`${baseUrl}/GetRegByYear`,
+                {
+                    year: year
+                },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        chart.initChart(obj,'demo-morris-area', 'demo-morris-area-legend');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                    notify.done();
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                    notify.done();
+                }
+            );
+        }
+
+        $("#year").change(function () {
+            $("#demo-morris-area").empty();
+            $('#demo-morris-area-legend').empty();
+            const year = $(this).val();
+            getCharData(year);
+        });
+
+        function getCharDataDoughnut(categoryId) {
+            notify.loading();
+            ajax.get(`${baseUrl}/GetItemByCategory`,
+                {
+                    categoryId: categoryId
+                },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        chart.initChartDoughnut(obj, 'demo-morris-donut');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                    notify.done();
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                    notify.done();
+                }
+            );
+        }
+
+        $("#CategoryId").change(function () {
+            $("#demo-morris-donut").empty();
+            const categoryId = $(this).val();
+            getCharDataDoughnut(categoryId);
+        });
+
+        getCharData(@currentYear);
+
+        getCharDataDoughnut($("#CategoryId").val());
+    </script>
+
+}

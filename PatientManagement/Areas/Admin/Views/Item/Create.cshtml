@@ -1,0 +1,135 @@
+﻿@using BELibrary.Entity
+@model Item
+
+    @{
+        ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+        Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">@ViewBag.Feature</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Tabs Content -->
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <form id="form" class="form-horizontal" action="#" method="post">
+                @if (ViewBag.IsEdit)
+                {
+                    <input type="hidden" value="true" name="IsEdit" />
+                    <input type="hidden" value="@Model.Id" name="Id" />
+                }
+                else
+                {
+                    <input type="hidden" value="false" name="IsEdit" />
+                }
+                <div class="form-group row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <label class="control-label">Tên vật tư*</label>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <label class="control-label">Danh mục*</label>
+                        @Html.DropDownList("CategoryId", (SelectList)ViewBag.Categories, "- Chọn danh mục -",
+                            new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <label class="control-label">Só lượng*</label>
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <label class="control-label">Mô tả</label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "10" })
+                    </div>
+                </div>
+                <div class="tab-footer" style="padding-top: 15px;">
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            @{
+                                if (ViewBag.IsEdit)
+                                {
+                                    <button type="submit" class="btn btn-success pull-right">Lưu</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-success pull-right">Thêm</button>
+                                }
+                            }
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @section Scripts {
+
+        <script>
+
+            const baseUrl = '/admin/item';
+            // Valid
+            const fields = {
+                Name: {
+                    container: 'tooltip',
+                    validators: {
+                        notEmpty: {
+                            message: 'Tiêu đề là bắt buộc và không thể để trống'
+                        }
+                    }
+                },
+                CategoryId: {
+                    container: 'tooltip',
+                    validators: {
+                        notEmpty: {
+                            message: 'Vui lòng chọn danh mục'
+                        }
+                    }
+                },
+                Amount: {
+                    container: 'tooltip',
+                    validators: {
+                        notEmpty: {
+                            message: 'Vui lòng nhập số lượng'
+                        }
+                    }
+                }
+            }
+            validator.valid('form', fields, (e) => {
+                e.preventDefault();
+
+                var formData = new FormData(document.getElementById('form'));
+                ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`, formData,
+                    (response) => {
+                        if (response.status) {
+                            notify.push(response.mess, notify.EType.SUCCESS);
+                            notify.loading();
+                            setTimeout(function () {
+                                window.location.href = baseUrl;
+                            }, 3000);
+
+                        } else {
+                            notify.push(response.mess, notify.EType.DANGER);
+                            $(':input[type="submit"]').prop('disabled', false);
+                        }
+                    },
+                    (jqXHR, textStatus) => {
+                        const mess = `Request failed: ${textStatus}`;
+                        notify.push(mess, notify.EType.DANGER);
+                        $(':input[type="submit"]').prop('disabled', false);
+                    }
+                );
+            });
+        </script>
+
+    }

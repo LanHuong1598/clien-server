@@ -1,0 +1,51 @@
+﻿@using BELibrary.Entity
+@using BELibrary.Utils
+@model List<AttachmentAssign>
+
+@{
+    ViewBag.Title = "Tệp đính kèm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Partial("_PartialSlide")
+
+<div class="container" style="padding-top: 90px">
+    <h2 class="text-center"> Thông tin tệp đính kèm</h2>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center">Tên </th>
+                            <th class="text-center">Loại </th>
+                            <th class="text-center">Tải xuống </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                        {
+                            <tr id="row_@item.value.Attachment.Id">
+                                <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                                <td class="text-center">@item.value.Attachment.Name</td>
+                                <td class="text-center">@item.value.Attachment.Type</td>
+                                <td class="text-center">
+                                    <a class="btn btn-info btn-icon" href="@item.value.Attachment.Url" target="_blank" style="font-size: 9px">
+                                        <i class="fa fa-download icon-sm"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer text-center">
+            <a class="btn btn-success" href="/account"> Quay lại</a>
+        </div>
+    </div>
+</div>
+
+<!-- end main-content -->
+@section Scripts {
+}

@@ -1,0 +1,273 @@
+﻿@using BELibrary.Core.Utils
+@using BELibrary.Entity
+@using BELibrary.Utils
+@model List<MedicalSupply>
+@{
+    ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section CSS{
+    <!--DataTables [ OPTIONAL ]-->
+    <link href="/Areas/Admin/Content/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Areas/Admin/Content/plugins/datatables/extensions/Responsive/css/responsive.dataTables.min.css" rel="stylesheet">
+
+    <link href="~/Areas/Admin/Content/plugins/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+    <style>
+        .select2-container {
+            z-index: 99999;
+            width: 100% !important;
+        }
+    </style>
+}
+
+<!--List-->
+<div class="panel">
+    <div class="panel-body">
+
+        <div class="pad-btm form-inline">
+            <div class="row">
+                <div class="col-sm-6 table-toolbar-left">
+                    <button data-toggle="modal" onclick="openModal(false)" class="btn btn-success"><i class="demo-pli-add"></i> Thêm</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tblData">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tên thiết bị </th>
+                        <th class="text-center">Số lượng </th>
+                        <th class="text-center">Ngày mượn </th>
+                        <th class="text-center">Trạng thái </th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Select((value, index) => new { index = (index + 1), value }))
+                    {
+                        <tr id="row_@item.value.Id">
+                            <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
+                            <td class="text-center">@item.value.Item.Name</td>
+                            <td class="text-center">@item.value.Amount </td>
+                            <td class="text-center">@item.value.DateOfHire.ToString("g")  </td>
+                            <td class="text-center"> @(StatusMedical.GetText(item.value.Status))   </td>
+
+                            <td class="text-center">
+                                <button class="btn btn-info btn-icon" onclick="openModal(true,'@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.Item.Name')"><i class="demo-psi-recycling icon-lg"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--Create-->
+<div class="modal fade" id="data-modal" role="dialog" aria-labelledby="create" aria-hidden="true">
+    <div class="modal-dialog" style="padding: 5% 0;">
+        <div class="modal-content">
+            <form id="modal-form" class="form-horizontal" method="post">
+                <input type="hidden" name="Id" />
+                <input type="hidden" name="isEdit" />
+                <input type="hidden" name="PatientId" value="@ViewBag.PatientId" />
+                <!--Modal header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                    <h4 class="modal-title">@ViewBag.Element</h4>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Tên thiết bị</label>
+                        <div class="col-lg-7">
+                            @Html.DropDownList("ItemId", (SelectList)ViewBag.Items,
+                                new { @class = "form-control", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Số lượng</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <input type="number" class="form-control" name="Amount" placeholder="Nhập số lượng" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"> Ngày nhận</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            <div class="input-group date" id="DateOfHire">
+                                <input type="text" class="form-control" name="DateOfHire" required />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Trạng thái</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            @Html.DropDownList("Status", (SelectList)ViewBag.ListStatus,
+                                new { @class = "form-control", @required = "required" })
+                        </div>
+                    </div>
+                </div>
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Đóng</button>
+                    <button class="btn btn-success" type="submit">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Script-->
+@section Scripts {
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="/Areas/Admin/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Areas/Admin/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="/Areas/Admin/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+
+    <script src="~/Areas/Admin/Content/plugins/moment/min/moment.min.js"></script>
+    <script src="~/Areas/Admin/Content/plugins/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#tblData').dataTable({
+                "language": {
+                    "paginate": {
+                        "previous": '<i class="demo-psi-arrow-left"></i>',
+                        "next": '<i class="demo-psi-arrow-right"></i>'
+                    }
+                }
+            });
+            $("#ItemId").select2();
+            $('#DateOfHire').datetimepicker();
+        });
+
+        const baseUrl = "/admin/medicalSupply";
+        // Valid
+        const fields = {
+            ItemId: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Tên không được để trống!'
+                    }
+                }
+            },
+            Amount: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Amount không được để trống!'
+                    }
+                }
+            },
+            DateOfHire: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'DateOfHire không được để trống!'
+                    }
+                }
+            }
+        }
+
+        validator.valid('modal-form',
+            fields,
+            (e) => {
+                e.preventDefault();
+
+                var formData = new FormData(document.getElementById('modal-form'));
+
+                ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`,
+                    formData,
+                    (response) => {
+                        if (response.status) {
+                            notify.push(response.mess, notify.EType.SUCCESS);
+                            notify.loading();
+                            $('#data-modal').modal('hide');
+                            window.location.reload();
+                        } else {
+                            notify.push(response.mess, notify.EType.DANGER);
+                            $(':input[type="submit"]').prop("disabled", false);
+                        }
+                    },
+                    (jqXhr, textStatus) => {
+                        const mess = `Request failed: ${textStatus}`;
+                        notify.push(mess, notify.EType.DANGER);
+                        $(':input[type="submit"]').prop("disabled", false);
+                    }
+                );
+            });
+
+        //Edit
+        function openModal(isEdit, id) {
+
+            $('#modal-form')[0].reset();
+            $("#Img").attr("src", "");
+            if (!isEdit) {
+                $('#modal-form input[name="isEdit"]').val(false);
+                $('#modal-form input[name="Id"]').val("");
+                $('#data-modal').modal('show');
+                return;
+            }
+
+            ajax.get(`${baseUrl}/GetJson`,
+                { id: id },
+                (response) => {
+                    if (response.status) {
+                        const obj = response.data;
+                        $('#modal-form input[name="Unit"]').val(obj.Unit);
+                        $('#modal-form input[name="Amount"]').val(obj.Amount);
+                        $('#DateOfHire').data("DateTimePicker").date(obj.DateHide);
+                        $("#Status").val(obj.Status);
+
+                        $("#ItemId").val(obj.ItemId);
+                        $("#ItemId").select2().trigger('change');
+
+                        $('#modal-form input[name="Id"]').val(obj.Id);
+                        $('#modal-form input[name="isEdit"]').val(true);
+                        $('#data-modal').modal('show');
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                    }
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+
+                }
+            );
+        }
+
+        //Del
+        function deleteElement(id, name) {
+            var mess = `Xác nhận <b>xóa</b> bản ghi <b>${name}</b>`;
+            bootbox.confirm(mess,
+                function (result) {
+                    if (result) {
+                        ajax.del(`${baseUrl}/del`,
+                            { id: id },
+                            (response) => {
+                                if (response.status) {
+                                    notify.push(response.mess, notify.EType.SUCCESS);
+                                    $(`#row_${id}`).remove();
+                                } else {
+                                    notify.push(mess, notify.EType.DANGER);
+                                }
+                            },
+                            (jqXhr, textStatus) => {
+                                const mess = `Request failed: ${textStatus}`;
+                                notify.push(mess, notify.EType.DANGER);
+
+                            }
+                        );
+                    }
+                });
+        }
+    </script>
+}

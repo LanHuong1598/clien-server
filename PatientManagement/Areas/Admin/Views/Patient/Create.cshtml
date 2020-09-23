@@ -1,0 +1,273 @@
+﻿@using System.Web.Mvc
+@using BELibrary.Entity
+@model Patient
+@{
+    ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var dateOfBirth = Model != null ? Model.DateOfBirth.ToString("yyyy-MM-dd") : DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd");
+    var indentificationCardDate = Model != null ? Model.IndentificationCardDate.ToString("yyyy-MM-dd") : DateTime.Now.AddYears(-5).ToString("yyyy-MM-dd");
+    var gender = (Model != null) ? Model.Gender : true;
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+
+                @if (ViewBag.isEdit)
+                {
+                    <h3 class="panel-title">
+                        Mã bệnh nhân: <span class="badge badge-success">@Model.PatientCode</span>
+                    </h3>
+                }
+                else
+                {
+                    <h3 class="panel-title">
+                        Mã bệnh nhân: <span class="badge badge-success"> @ViewBag.Code</span>
+                    </h3>
+
+                }
+            </div>
+
+            <!--Block Styled Form -->
+            <!--===================================================-->
+            <form method="post" id="form">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (ViewBag.isEdit)
+                {
+                    <input type="hidden" value="true" name="isEdit" />
+                    <input type="hidden" value="@Model.Id" name="Id" />
+                }
+                else
+                {
+                    <input type="hidden" value="false" name="isEdit" />
+                }
+
+                <input type="hidden" value="false" name="isSaveAs" />
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label">Họ tên</label>
+                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Ngày sinh</label>
+                                @Html.EditorFor(model => dateOfBirth, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Giới tính</label>
+                                <select name="Gender" class="form-control" required value="@gender.ToString()">
+                                    <option>---- Lựa chọn ----</option>
+                                    <option value="True" @(gender ? "selected" : "")>Nam</option>
+                                    <option value="False" @(!gender ? "selected" : "")>Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Email</label>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Điện thoại</label>
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Mã căn cước</label>
+                                @Html.EditorFor(model => model.IndentificationCardId, new { htmlAttributes = new { @class = "form-control", @maxlength = 50 } })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Cấp ngày</label>
+                                @Html.EditorFor(model => indentificationCardDate, new { htmlAttributes = new { @class = "form-control", @maxlength = 50, @type = "date" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Nghề nghiệp</label>
+                                @Html.EditorFor(model => model.Job, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Nơi công tác, học tập</label>
+                                @Html.EditorFor(model => model.WorkPlace, new { htmlAttributes = new { @class = "form-control", @maxlength = 50 } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Tiền sử bệnh tật gia đình</label>
+                                @Html.TextAreaFor(model => model.HistoryOfIllnessFamily, new { @class = "form-control", @rows = "6", @maxlength = 1000 })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Tiền sử bệnh tật bản thân</label>
+                                @Html.TextAreaFor(model => model.HistoryOfIllnessYourself, new { @class = "form-control", @rows = "6", @maxlength = 1000 })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label">Địa chỉ</label>
+                                <div id="lookup">
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @maxlength = 250, @id = "address-lookup" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Ảnh hồ sơ</label>
+                                <div class="input-group mar-btm">
+                                    @Html.EditorFor(model => model.ImageProfile, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                                    <span class="input-group-btn" onclick="ChooseImgAvatar()">
+                                        <a class="btn btn-mint btn-icon"><i class="fa fa-cloud-upload icon-lg"></i></a>
+                                    </span>
+                                </div>
+                                @if (ViewBag.isEdit)
+                                {
+                                    <img class="img img-thumbnail" id="ImgAvt" style="width: 200px;float: right" src="@Model.ImageProfile" alt="" />
+                                }
+                                else
+                                {
+                                    <img class="img img-thumbnail" id="ImgAvt" src="" alt="" style="width: 200px;float: right" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-success" onclick="saveData(false)">Lưu</button>
+                    @if (!ViewBag.isEdit)
+                    {
+                        <button class="btn btn-primary" onclick="saveData(true)">Lưu và tạo bệnh án</button>
+                    }
+                    <a class="btn btn-danger" href="/admin/Patient/">Hủy</a>
+                </div>
+            </form>
+            <!--===================================================-->
+            <!--End Block Styled Form -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyiVgN9rodizCjq6WoTVQPwEYIZj_mgc"></script>
+    <script src="~/Areas/Admin/Content/js/address-lookup.js"></script>
+    <script>
+        $("#lookup").addressLookup({
+            "input": "#address-lookup"
+        })
+    </script>
+
+    <script>
+        $("#ImageProfile").change(function () {
+            const imgSrc = $("input[name=ImageProfile]").val();
+            if (imgSrc !== "") {
+                $("#ImgAvt").attr("src", imgSrc);
+            }
+        });
+        function ChooseImgAvatar() {
+            const finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                $("#ImgAvt").attr("src", fileUrl);
+                $("#ImageProfile").val(fileUrl);
+            }
+            finder.popup();
+        }
+
+        function saveData(isRecord) {
+            $("input[name=isSaveAs]").val(isRecord);
+            //$("#form").submit();
+        }
+        const baseUrl = '/admin/Patient';
+        // Valid
+        const fields = {
+            FullName: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Họ tên là bắt buộc và không thể để trống'
+                    }
+                }
+            },
+            Address: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Địa chỉ là bắt buộc và không thể để trống'
+                    }
+                }
+            },
+            Gender: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Giới tính là bắt buộc và không thể để trống'
+                    }
+                }
+            },
+            IndentificationCardId: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Mã căn cước là bắt buộc và không thể để trống'
+                    }
+                }
+            },
+            Phone: {
+                container: 'tooltip',
+                validators: {
+                    notEmpty: {
+                        message: 'Điện thoại là bắt buộc và không thể để trống'
+                    }
+                }
+            }
+
+        }
+        validator.valid('form', fields, (e) => {
+            e.preventDefault();
+            var formData = new FormData(document.getElementById('form'));
+            ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`, formData,
+                (response) => {
+                    if (response.status) {
+                        notify.push(response.mess, notify.EType.SUCCESS);
+                        notify.loading();
+                        const isRecord = $("input[name=isSaveAs]").val();
+                        if (isRecord === 'true') {
+                            window.location.href = `/admin/record?patientId=${response.data.Id}`;
+                        } else {
+                            window.location.href = baseUrl + '/all';
+                        }
+                    } else {
+                        notify.push(response.mess, notify.EType.DANGER);
+                        $(':input[type="submit"]').prop('disabled', false);
+                    }
+                },
+                (jqXhr, textStatus) => {
+                    const mess = `Request failed: ${textStatus}`;
+                    notify.push(mess, notify.EType.DANGER);
+                    $(':input[type="submit"]').prop('disabled', false);
+                }
+            );
+        });
+    </script>
+}
