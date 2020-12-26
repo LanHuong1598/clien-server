@@ -33,6 +33,7 @@ namespace BELibrary.Entity
 
         public int StatusRecord { get; set; }
 
+
         public virtual Doctor Doctor { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

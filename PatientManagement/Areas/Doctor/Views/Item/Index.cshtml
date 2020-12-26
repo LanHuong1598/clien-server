@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = ViewBag.Feature + " " + ViewBag.Element;
+    Layout = "~/Areas/Doctor/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using BELibrary.Entity
+@model List<Item>
+
+@section CSS{
+    <!--DataTables [ OPTIONAL ]-->
+    <link href="/Areas/Doctor/Content/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Areas/Doctor/Content/plugins/datatables/extensions/Responsive/css/responsive.dataTables.min.css" rel="stylesheet">
+}
+
+<!--List-->
+<div class="panel">
+    <div class="panel-body">
+
+        <div class="pad-btm form-inline">
+            <div class="row">
+                <div class="col-sm-3 table-toolbar-left">
+                 
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">Danh mục</label>
+                        @Html.DropDownList("categoryId", (SelectList)ViewBag.Categories,
+                            new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div class="col-sm-3 table-toolbar-left"></div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tblData">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tiêu đề</th>
+                        <th class="text-center">Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Select((value, i) => new { i, value }))
+                    {
+                        <tr id="row_@item.value.Id">
+                            <td class="text-center">@(item.i + 1)</td>
+                            <td class="text-center">@item.value.Name</td>
+                            <td class="text-center">@item.value.Amount</td>
+                         
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="/Areas/Doctor/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Areas/Doctor/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="/Areas/Doctor/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+
+    <script>
+
+        const baseUrl = "/doctor/item";
+
+        $(document).ready(function () {
+
+            $("#categoryId").val('@ViewBag.CategoryId');
+            $("#categoryId").change(function () {
+                const categoryId = $(this).val();
+                notify.loading();
+                window.location.href = baseUrl + "?categoryId=" + categoryId;
+            });
+            $('#tblData').dataTable({
+                "language": {
+                    "paginate": {
+                        "previous": '<i class="demo-psi-arrow-left"></i>',
+                        "next": '<i class="demo-psi-arrow-right"></i>'
+                    }
+                }
+            });
+        });
+
+        //Edit
+        function openEditing(id) {
+            window.location.href = `${baseUrl}/update?id=${id}`;
+        }
+
+        //Del
+        function deleteElement(_id, name) {
+            var mess = 'Xác nhận <b>xóa</b> bản ghi <b>' + name + '</b>';
+            bootbox.confirm(mess, function (result) {
+                if (result) {
+                    ajax.del(`${baseUrl}/del`,
+                        { id: _id },
+                        (response) => {
+                            if (response.status) {
+                                notify.push(response.mess, notify.EType.SUCCESS);
+                                $(`#row_${_id}`).remove();
+                            } else {
+                                notify.push(mess, notify.EType.DANGER);
+                            }
+                        },
+                        (jqXHR, textStatus) => {
+                            const mess = `Request failed: ${textStatus}`;
+                            notify.push(mess, notify.EType.DANGER);
+
+                        }
+                    );
+                }
+            });
+        }
+    </script>
+}

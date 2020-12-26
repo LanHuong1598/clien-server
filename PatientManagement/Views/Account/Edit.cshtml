@@ -104,12 +104,12 @@
                 <div class="row">
                     <div class="col-sx-12 col-sm-4 col-md-4">
                         <div class="doctor-thumb">
-                            <img class="img img-responsive" src="@user.LinkAvata" alt="">
+                            <img class="img img-responsive" src="@user.LinkAvatar" alt="">
                         </div>
                         <div class="info p-20 bg-black-333">
                             <h4 class="full-name text-center">@user.FullName</h4>
                             <ul class="list angle-double-right m-0 text-center">
-                                <li class="mt-0 text-gray-silver"><strong class="text-gray-lighter">Email</strong><br> @user.Email</li>
+                                <li class="mt-0 text-gray-silver"><strong class="text-gray-lighter">Email</strong><br> @user.Phone</li>
                                 <li class="text-gray-silver"><strong class="text-gray-lighter">Phone</strong><br> @user.Phone</li>
                             </ul>
                             <ul class="styled-icons icon-gray icon-circled icon-sm mt-15 mb-15 text-center">
@@ -147,20 +147,20 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                @*<div class="form-group col-md-6">
                                     <label for="form_choose_username">Tên đăng nhập</label>
-                                    <input id="form_choose_username" name="Username" class="form-control" type="text" required disabled value="@user.Username">
-                                </div>
-                                <div class="form-group col-md-6">
+                                    <input id="form_choose_username" name="Username" class="form-control" type="text" required disabled value="@user.UserName">
+                                </div>*@
+                                @*<div class="form-group col-md-6">
                                     <label for="form_chooseDateOfBirth">Ngày sinh</label>
-                                    <input id="form_choose_DateOfBirth" name="DateOfBirth" class="form-control" type="date" required value="@user.DateOfBirth.ToString("yyyy-MM-dd")">
-                                </div>
+                                    <input id="form_choose_DateOfBirth" name="DateOfBirth" class="form-control" type="date" required value="@user..ToString("yyyy-MM-dd")">
+                                </div>*@
                             </div>
 
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Emal</label>
-                                    <input name="Email" class="form-control" type="email" required value="@user.Email">
+                                    <label>Email</label>
+                                    <input name="Email" class="form-control" type="email"  value="@user.Phone">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Phone</label>

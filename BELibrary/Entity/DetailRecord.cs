@@ -30,8 +30,11 @@ namespace BELibrary.Entity
 
         public Guid RecordId { get; set; }
 
+        public DateTime Date { get; set; }
+
         public virtual Record Record { get; set; }
 
         public virtual Faculty Faculty { get; set; }
+
     }
 }

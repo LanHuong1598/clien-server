@@ -23,7 +23,7 @@ namespace BELibrary.Persistence.Repositories
 
             var account =
                   db.Accounts.FirstOrDefault(x =>
-                  x.Role == 1
+                  (x.Role == 1 || x.Role == 2)
                   && x.UserName.ToLower() == username.ToLower()
                   && x.Password == passwordCrypto);
 
@@ -36,7 +36,7 @@ namespace BELibrary.Persistence.Repositories
             var db = PatientManagementDbContext;
             var account =
                   db.Accounts.FirstOrDefault(x =>
-                  x.Role == 1
+                  (x.Role == 1 || x.Role == 2)
                   && x.UserName.ToLower() == username.ToLower());
 
             return account;
