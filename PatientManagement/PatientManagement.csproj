@@ -146,6 +146,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\Models\StatisticPatient.cs" />
     <Compile Include="Areas\Doctor\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Doctor\Authorization\CookiesManage.cs" />
     <Compile Include="Areas\Doctor\Authorization\PermissionAttribute.cs" />

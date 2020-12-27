@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PatientManagement.Areas.Doctor.Models
+namespace PatientManagement.Areas.Admin.Models
 {
     public class StatisticPatient
     {
