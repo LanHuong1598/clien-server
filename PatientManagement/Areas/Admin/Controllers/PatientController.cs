@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using BELibrary.Core.Entity;
-using BELibrary.Core.Utils;
+﻿using BELibrary.Core.Entity;
 using BELibrary.DbContext;
 using BELibrary.Entity;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace PatientManagement.Areas.Admin.Controllers
 {
@@ -75,19 +74,20 @@ namespace PatientManagement.Areas.Admin.Controllers
             if (Request.Url != null)
                 ViewBag.BaseURL = string.Join("", Request.Url.Segments.Take(Request.Url.Segments.Length - 1));
 
-            string code;
+            int code;
             // Create patient code
             using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
             {
-                var patient = workScope.Patients.GetAll().OrderByDescending(x => x.JoinDate).FirstOrDefault();
+                var patient = workScope.Patients.GetAll().OrderByDescending(x => x.PatientCode.Length).
+                    ThenByDescending(x => x.PatientCode).FirstOrDefault();
                 if (patient != null)
                 {
-                    var codeSplit = patient.PatientCode.Split('-');
-                    code = Common.Prefix + (int.Parse(codeSplit[1]) + 1);
+
+                    code = Int32.Parse(patient.PatientCode)+1;
                 }
                 else
                 {
-                    code = Common.Prefix + "1";
+                    code = 1;
                 }
             }
 
@@ -161,21 +161,21 @@ namespace PatientManagement.Areas.Admin.Controllers
                 {
                     using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
                     {
-                        string code;
-
-                        var patient = workScope.Patients.GetAll().OrderByDescending(x => x.JoinDate).FirstOrDefault();
+                        int code;
+                        var patient = workScope.Patients.GetAll().OrderByDescending(x => x.PatientCode.Length).
+                   ThenByDescending(x => x.PatientCode).FirstOrDefault();
                         if (patient != null)
                         {
-                            var codeSplit = patient.PatientCode.Split('-');
-                            code = Common.Prefix + (int.Parse(codeSplit[1]) + 1);
+
+                            code = Int32.Parse(patient.PatientCode)+1;
                         }
                         else
                         {
-                            code = Common.Prefix + "1";
+                            code = 1;
                         }
 
                         input.Id = Guid.NewGuid();
-                        input.PatientCode = code;
+                        input.PatientCode = code.ToString();
                         input.JoinDate = DateTime.Now;
                         input.Status = true;
 
