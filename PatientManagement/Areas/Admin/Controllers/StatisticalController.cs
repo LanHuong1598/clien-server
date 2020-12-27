@@ -30,7 +30,7 @@ namespace PatientManagement.Areas.Admin.Controllers
                 var patients = workScope.Patients.GetAll();
 
                 var date = new DateTime(year, 1, 1);
-                var months = Enumerable.Range(0, 11)
+                var months = Enumerable.Range(0, 12)
                     .Select(x => new
                     {
                         month = date.AddMonths(x).Month,
