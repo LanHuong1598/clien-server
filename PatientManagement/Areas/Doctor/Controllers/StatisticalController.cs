@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BELibrary.Core.Entity;
 using BELibrary.Core.Utils;
 using BELibrary.DbContext;
+using PatientManagement.Areas.Doctor.Models;
 
 namespace PatientManagement.Areas.Doctor.Controllers
 {
@@ -27,37 +29,39 @@ namespace PatientManagement.Areas.Doctor.Controllers
         {
             using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
             {
-                var patients = workScope.Patients.GetAll();
+                //var patients = workScope.Patients.GetAll();
 
-                var date = new DateTime(year, 1, 1);
-                var months = Enumerable.Range(0, 12)
-                    .Select(x => new
-                    {
-                        month = date.AddMonths(x).Month,
-                        year = date.AddMonths(x).Year
-                    }).ToList();
+                //var date = new DateTime(year, 1, 1);
+                //var months = Enumerable.Range(0, 12)
+                //    .Select(x => new
+                //    {
+                //        month = date.AddMonths(x).Month,
+                //        year = date.AddMonths(x).Year
+                //    }).ToList();
 
-                var dataPerYearAndMonth =
-                    months.GroupJoin(patients,
-                        m => new { m.month, m.year },
-                        patient => new
-                        {
-                            month = patient.JoinDate.Month,
-                            year = patient.JoinDate.Year
-                        },
-                        (p, g) => new
-                        {
-                            month = "Tháng " + p.month,
-                            p.year,
-                            count = g.Count()
-                        });
-
+                //var dataPerYearAndMonth =
+                //    months.GroupJoin(patients,
+                //        m => new { m.month, m.year },
+                //        patient => new
+                //        {
+                //            month = patient.JoinDate.Month,
+                //            year = patient.JoinDate.Year
+                //        },
+                //        (p, g) => new
+                //        {
+                //            month = "Tháng " + p.month,
+                //            p.year,
+                //            count = g.Count()
+                //        });
+                SqlParameter paraYear = new SqlParameter("@year", year);
+                List<StatisticPatient> lstPati = new List<StatisticPatient>();
+                lstPati = new PatientManagementDbContext().Database.SqlQuery<StatisticPatient>("exec ThongkeBenhNhan_Nam @year", paraYear).ToList();
                 return
                     Json(new
                     {
                         status = true,
                         mess = "Thành công ",
-                        data = dataPerYearAndMonth.ToList()
+                        data = lstPati
                     });
             }
         }

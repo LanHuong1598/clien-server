@@ -33,7 +33,7 @@
                     <tr>
                         <th class="text-center">STT</th>
                         <th class="text-center">Tên </th>
-                        <th class="text-center">Actions</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -42,10 +42,10 @@
                         <tr id="row_@item.value.Id">
                             <td class="text-center"><a class="btn-link" href="#">@item.index</a></td>
                             <td class="text-center">@item.value.Name</td>
-                            <td class="text-center">
-                                <button class="btn btn-info btn-icon" onclick="openModal(true,'@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
-                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.Name')"><i class="demo-psi-recycling icon-lg"></i></button>
-                            </td>
+                            <!--<td class="text-center">-->
+                                @*<button class="btn btn-info btn-icon" onclick="openModal(true,'@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>*@
+                                @*<button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.Name')"><i class="demo-psi-recycling icon-lg"></i></button>*@
+                            <!--</td>-->
                         </tr>
                     }
                 </tbody>

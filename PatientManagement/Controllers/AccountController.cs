@@ -127,7 +127,7 @@ namespace PatientManagement.Controllers
                     try
                     {
                         var doctors = workScope.Doctors.GetAll().ToList();
-                        Doctor doctor = doctors[0];
+                        BELibrary.Entity.Doctor doctor = doctors[0];
                         //add record
                         Record record = new Record();
                         var recordid = Guid.NewGuid();
@@ -152,6 +152,7 @@ namespace PatientManagement.Controllers
                         pati.Phone = usreg.Phone;
                         pati.Email = usreg.Email;
                         pati.Address = usreg.Address;
+                        pati.DateOfBirth = usreg.DateOfBirth;
                         int code;
                         // Create patient code
                       
@@ -171,7 +172,7 @@ namespace PatientManagement.Controllers
 
                         pati.JoinDate = DateTime.Now;
                         pati.Status = true;
-
+                        
                         pati.RecordId = recordid;
 
                         workScope.Patients.Add(pati);

@@ -188,6 +188,7 @@
     <Compile Include="Areas\Admin\Models\LoginModel.cs" />
     <Compile Include="Areas\Admin\Models\MovieCalendarDtoView.cs" />
     <Compile Include="Areas\Admin\Models\MovieCalendarGet.cs" />
+    <Compile Include="Areas\Doctor\Models\StatisticPatient.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

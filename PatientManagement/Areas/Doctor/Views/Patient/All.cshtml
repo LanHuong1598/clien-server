@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-sm-6 table-toolbar-left">
                     <a class="btn btn-success" href="/Doctor/Patient/Create">
-                        <i class="demo-pli-add"></i> Thêm
+                        @*<i class="demo-pli-add"></i> Thêm*@
                     </a>
                 </div>
             </div>
@@ -50,8 +50,8 @@
                             <td class="text-center">@(item.value.Gender ? "Nam" : "Nữ")</td>
                             <td class="text-center">
                                 <button class="btn btn-info btn-icon" title="Xem bệnh án" onclick="openRecord('@item.value.Id')"><i class="fa fa-calendar  icon-lg"></i></button>
-                                <button class="btn btn-info btn-icon" title="Sửa bệnh án" onclick="openEditing('@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
-                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.FullName')"><i class="demo-psi-recycling icon-lg"></i></button>
+                                @*<button class="btn btn-info btn-icon" title="Sửa bệnh án" onclick="openEditing('@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.FullName')"><i class="demo-psi-recycling icon-lg"></i></button>*@
                             </td>
                         </tr>
                     }
