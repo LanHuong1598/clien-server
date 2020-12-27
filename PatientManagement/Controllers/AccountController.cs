@@ -69,7 +69,7 @@ namespace PatientManagement.Controllers
         {
             if (CookiesManage.Logined())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -312,6 +312,7 @@ namespace PatientManagement.Controllers
                                 Expires = DateTime.Now.AddDays(30)
                             };
                             HttpContext.Response.Cookies.Add(userCookie);
+                            //RedirectToAction("Account", "Edit");
                             return Json(new { status = true, mess = "Cập nhật thành công" });
                         }
                         else
@@ -419,13 +420,13 @@ namespace PatientManagement.Controllers
         public ActionResult Logout()
         {
             var nameCookie = Request.Cookies[CookiesKey.Client];
-            if (nameCookie == null) return RedirectToAction("Index", "Home");
+            if (nameCookie == null) return RedirectToAction("Index", "Account");
             var myCookie = new HttpCookie(CookiesKey.Client)
             {
                 Expires = DateTime.Now.AddDays(-1d)
             };
             Response.Cookies.Add(myCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
     }
 }

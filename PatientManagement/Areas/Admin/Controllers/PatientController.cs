@@ -83,7 +83,10 @@ namespace PatientManagement.Areas.Admin.Controllers
                 if (patient != null)
                 {
 
-                    code = Int32.Parse(patient.PatientCode)+1;
+
+                    code = Int32.Parse(patient.PatientCode) +1 ;
+
+
                 }
                 else
                 {
@@ -167,7 +170,9 @@ namespace PatientManagement.Areas.Admin.Controllers
                         if (patient != null)
                         {
 
-                            code = Int32.Parse(patient.PatientCode)+1;
+
+                            code = Int32.Parse(patient.PatientCode) + 1;
+
                         }
                         else
                         {

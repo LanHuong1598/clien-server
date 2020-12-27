@@ -33,7 +33,7 @@ namespace PatientManagement.Areas.Admin.Controllers
             using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
             {
                 var account = workScope.Accounts.ValidBEAccount(model.Username, model.Password);
-                if (account != null)
+                if (account != null && account.Role == 1)
                 {
                     if (HttpContext.Request.Url != null)
                     {

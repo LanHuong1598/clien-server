@@ -86,7 +86,7 @@ namespace PatientManagement.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public JsonResult CreateOrEdit(Doctor input, bool isEdit)
+        public JsonResult CreateOrEdit(BELibrary.Entity.Doctor input, bool isEdit)
         {
             try
             {

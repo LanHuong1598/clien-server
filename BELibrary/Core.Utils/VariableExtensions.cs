@@ -33,6 +33,7 @@ namespace BELibrary.Core.Utils
     {
         public const string LangCode = "patient_lang_code";
         public const string Admin = "patient_admin_cookies";
+        public const string Doctor = "patient_doctor_cookies";
         public const string Client = "patient_client_cookies";
     }
 
