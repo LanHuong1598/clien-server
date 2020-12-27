@@ -200,6 +200,7 @@
     <Compile Include="Handler\Payment\Momo\MomoExtend.cs" />
     <Compile Include="Handler\Payment\Momo\MoMoSecurity.cs" />
     <Compile Include="Handler\Payment\Momo\PaymentRequest.cs" />
+    <Compile Include="Models\AccountRegiter.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

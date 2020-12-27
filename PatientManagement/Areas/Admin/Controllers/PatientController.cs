@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using BELibrary.Core.Entity;
-using BELibrary.Core.Utils;
+﻿using BELibrary.Core.Entity;
 using BELibrary.DbContext;
 using BELibrary.Entity;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace PatientManagement.Areas.Admin.Controllers
 {
@@ -84,7 +83,10 @@ namespace PatientManagement.Areas.Admin.Controllers
                 if (patient != null)
                 {
 
+
                     code = Int32.Parse(patient.PatientCode) +1 ;
+
+
                 }
                 else
                 {
@@ -168,7 +170,9 @@ namespace PatientManagement.Areas.Admin.Controllers
                         if (patient != null)
                         {
 
+
                             code = Int32.Parse(patient.PatientCode) + 1;
+
                         }
                         else
                         {

@@ -113,27 +113,86 @@ namespace PatientManagement.Controllers
 
         [HttpPost]
         [ValidateInput(true)]
-        public JsonResult Register(Account us, string rePassword)
+        public JsonResult Register(AccountRegiter usreg, string rePassword)
         {
-            if (us.Password != rePassword)
+            if (usreg.Password != rePassword)
             {
                 return Json(new { status = false, mess = "Mật khẩu không khớp" });
             }
             using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
             {
-                var account = workScope.Accounts.FirstOrDefault(x => x.UserName.ToLower() == us.UserName.ToLower());
+                var account = workScope.Accounts.FirstOrDefault(x => x.UserName.ToLower() == usreg.UserName.ToLower());
                 if (account == null)
                 {
                     try
                     {
-                        var passwordFactory = us.Password + VariableExtensions.KeyCrypto;
+                        var doctors = workScope.Doctors.GetAll().ToList();
+                        Doctor doctor = doctors[0];
+                        //add record
+                        Record record = new Record();
+                        var recordid = Guid.NewGuid();
+                        record.Id = recordid;
+                        record.CreatedDate = DateTime.Today;
+                        record.CreatedBy = "Quản trị";
+                        record.ModifiedBy = "Quản trị";
+                        record.ModifiedDate = DateTime.Today;
+                        record.StatusRecord = 1;
+                        record.DoctorId = doctor.Id;
+                        workScope.Records.Add(record);
+                        workScope.Complete();
+                  
+                        //add patient
+                        Patient pati = new Patient();
+                        var paiid = Guid.NewGuid();
+                        pati.Id = paiid;
+                        pati.FullName = usreg.FullName;
+                        pati.Gender = usreg.Gender;
+                        pati.IndentificationCardDate = usreg.IndentificationCardDate;
+                        pati.IndentificationCardId = usreg.IndentificationCardId;
+                        pati.Phone = usreg.Phone;
+                        pati.Email = usreg.Email;
+                        pati.Address = usreg.Address;
+                        int code;
+                        // Create patient code
+                      
+                        var patient = workScope.Patients.GetAll().OrderByDescending(x => x.PatientCode.Length).
+                                ThenByDescending(x => x.PatientCode).FirstOrDefault();
+                            if (patient != null)
+                            {
+
+                                code = Int32.Parse(patient.PatientCode) + 1;
+                            }
+                            else
+                            {
+                                code = 1;
+                            }
+                        
+                        pati.PatientCode = code.ToString();
+
+                        pati.JoinDate = DateTime.Now;
+                        pati.Status = true;
+
+                        pati.RecordId = recordid;
+
+                        workScope.Patients.Add(pati);
+
+                        workScope.Complete();
+
+                        var passwordFactory = usreg.Password + VariableExtensions.KeyCrypto;
                         var passwordCrypto = CryptorEngine.Encrypt(passwordFactory, true);
 
-                        us.Password = passwordCrypto;
-                        us.Role = RoleKey.Patient;
-                        us.LinkAvatar = us.Gender ? "/Content/images/team/2.png" : "/Content/images/team/3.png";
-                        us.Id = Guid.NewGuid();
-                        workScope.Accounts.Add(us);
+                        Account ac = new Account();
+                        ac.FullName = pati.FullName;
+                        ac.Gender = pati.Gender;
+                        ac.Phone = pati.Phone;
+                        ac.UserName = usreg.UserName;
+                        ac.Password = passwordCrypto;
+                        ac.Role = RoleKey.Patient;
+                        ac.LinkAvatar = "/Content/images/team/2.png";
+                        ac.Id = Guid.NewGuid();
+                        ac.PatientId = paiid;
+
+                        workScope.Accounts.Add(ac);
                         workScope.Complete();
 
                         //Login luon
@@ -141,7 +200,7 @@ namespace PatientManagement.Controllers
                         {
                             var host = HttpContext.Request.Url.Authority;
 
-                            var cookieClient = us.UserName + "|" + host.ToLower() + "|" + us.Id;
+                            var cookieClient = usreg.UserName + "|" + host.ToLower() + "|" + ac.Id;
                             var decodeCookieClient = CryptorEngine.Encrypt(cookieClient, true);
                             var userCookie = new HttpCookie(CookiesKey.Client)
                             {
@@ -156,7 +215,7 @@ namespace PatientManagement.Controllers
                             return Json(new { status = false, mess = "Thêm không thành công" });
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         return Json(new { status = false, mess = "Thêm không thành công" });
                     }
