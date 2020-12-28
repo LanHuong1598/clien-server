@@ -7,7 +7,7 @@ namespace PatientManagement.Areas.Doctor.Models
 {
     public class StatisticPatient
     {
-        public int month { get; set; }
+        public string month { get; set; }
         public int year { get; set; }
         public int count { get; set; }
     }

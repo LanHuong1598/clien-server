@@ -54,17 +54,31 @@ namespace PatientManagement.Areas.Doctor.Controllers
                 //            count = g.Count()
                 //        });
                 SqlParameter paraYear = new SqlParameter("@year", year);
-                List<StatisticPatient> lstPati = new List<StatisticPatient>();
-                lstPati = new PatientManagementDbContext().Database.SqlQuery<StatisticPatient>("exec ThongkeBenhNhan_Nam @year", paraYear).ToList();
-                return
-                    Json(new
-                    {
-                        status = true,
-                        mess = "Thành công ",
-                        data = lstPati
-                    });
+
+                var cookiesClient = System.Web.HttpContext.Current.Request.Cookies.Get(CookiesKey.Doctor);
+                if (cookiesClient != null)
+                {
+                    var decodeCookie = BELibrary.Utils.CryptorEngine.Decrypt(cookiesClient.Value, true);
+
+                    var vals = decodeCookie.Split('|');
+
+                    var host = System.Web.HttpContext.Current.Request.Url.Authority;
+                    SqlParameter doctor_id = new SqlParameter("@doctor_id", vals[2]);
+                    List<StatisticPatient> lstPati = new List<StatisticPatient>();
+                    lstPati = new PatientManagementDbContext().Database.SqlQuery<StatisticPatient>("exec ThongKeBenhNhan_Nam_Bacsi @year, '" + "@doctor_id'", paraYear, doctor_id).ToList();
+                    return
+                        Json(new
+                        {
+                            status = true,
+                            mess = "Thành công ",
+                            data = lstPati
+                        });
+                }
             }
+
+            return null;
         }
+        
 
         [HttpPost]
         public JsonResult GetItemByCategory(Guid? categoryId)
