@@ -136,7 +136,7 @@ namespace PatientManagement.Areas.Admin.Controllers
                 Expires = DateTime.Now.AddDays(-1d)
             };
             Response.Cookies.Add(newCookie);
-            return RedirectToAction("Index");
+            return RedirectToAction("Login", "Account", new { area = "" });
         }
     }
 }

@@ -88,16 +88,48 @@ namespace PatientManagement.Controllers
                     var host = HttpContext.Request.Url.Authority;
                     if (account != null)
                     {
-                        //đăng nhập thành công
-                        var cookieClient = account.UserName + "|" + host.ToLower() + "|" + account.Id;
-                        var decodeCookieClient = CryptorEngine.Encrypt(cookieClient, true);
-                        var userCookie = new HttpCookie(CookiesKey.Client)
+                        if (account.Role == 3)
                         {
-                            Value = decodeCookieClient,
-                            Expires = DateTime.Now.AddDays(30)
-                        };
-                        HttpContext.Response.Cookies.Add(userCookie);
-                        return Json(new { status = true, mess = "Đăng nhập thành công" });
+                            //đăng nhập thành công
+                            var cookieClient = account.UserName + "|" + host.ToLower() + "|" + account.Id;
+                            var decodeCookieClient = CryptorEngine.Encrypt(cookieClient, true);
+                            var userCookie = new HttpCookie(CookiesKey.Client)
+                            {
+                                Value = decodeCookieClient,
+                                Expires = DateTime.Now.AddDays(30)
+                            };
+                            HttpContext.Response.Cookies.Add(userCookie);
+                            return Json(new { type="account", status = true, mess = "Đăng nhập thành công" });
+                        }
+
+                         if (account.Role == 2)
+                        {
+                            //đăng nhập thành công
+                            var cookieClient = account.UserName + "|" + host.ToLower() + "|" + account.Id;
+                            var decodeCookieClient = CryptorEngine.Encrypt(cookieClient, true);
+                            var userCookie = new HttpCookie(CookiesKey.Doctor)
+                            {
+                                Value = decodeCookieClient,
+                                Expires = DateTime.Now.AddDays(30)
+                            };
+                            HttpContext.Response.Cookies.Add(userCookie);
+                            return Json(new { type = "doctor" ,status = true, mess = "Đăng nhập thành công" });
+                        }
+
+                        if (account.Role == 1)
+                        {
+                            //đăng nhập thành công
+                            var cookieClient = account.UserName + "|" + host.ToLower() + "|" + account.Id;
+                            var decodeCookieClient = CryptorEngine.Encrypt(cookieClient, true);
+                            var userCookie = new HttpCookie(CookiesKey.Admin)
+                            {
+                                Value = decodeCookieClient,
+                                Expires = DateTime.Now.AddDays(30)
+                            };
+                            HttpContext.Response.Cookies.Add(userCookie);
+                            return Json(new { type = "admin" ,status = true, mess = "Đăng nhập thành công" });
+                        }
+                        return Json(new { status = false, mess = "Tên và mật khẩu không chính xác" }); ;
                     }
                     else
                     {
