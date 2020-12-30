@@ -13,7 +13,7 @@ namespace PatientManagement.Areas.Doctor.Controllers
     public class LoginController : Controller
     {
         //
-        // GET: /Doctor/Login/
+        // GET: /Administrator/Login/
 
         [HttpGet]
         public ActionResult Index(string returnUrl = "")
@@ -136,7 +136,7 @@ namespace PatientManagement.Areas.Doctor.Controllers
                 Expires = DateTime.Now.AddDays(-1d)
             };
             Response.Cookies.Add(newCookie);
-            return RedirectToAction("Login", "Account", new { area = "" });
+            return RedirectToAction("Index");
         }
     }
 }

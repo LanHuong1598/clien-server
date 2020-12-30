@@ -9,42 +9,16 @@
         success: function (response) {
             if (response.status) {
                 utils.done();
-                if (response.type == "account") {
-                    Lobibox.alert("success", {
-                        msg: response.mess,
-                        beforeClose: function () {
-                            var rtUrl = $('#rtUrl').val();
-                            if (rtUrl === "") {
-                                rtUrl = "/";
-                            }
-                            window.location.href = rtUrl;
+                Lobibox.alert("success", {
+                    msg: response.mess,
+                    beforeClose: function () {
+                        var rtUrl = $('#rtUrl').val();
+                        if (rtUrl === "") {
+                            rtUrl = "/";
                         }
-                    })
-                };
-                if (response.type == "admin") {
-                    Lobibox.alert("success", {
-                        msg: response.mess,
-                        beforeClose: function () {
-                            var rtUrl = $('#rtUrl').val();
-                            if (rtUrl === "") {
-                                rtUrl = "/admin";
-                            }
-                            window.location.href = rtUrl;
-                        }
-                    })
-                };
-                if (response.type == "doctor") {
-                    Lobibox.alert("success", {
-                        msg: response.mess,
-                        beforeClose: function () {
-                            var rtUrl = $('#rtUrl').val();
-                            if (rtUrl === "") {
-                                rtUrl = "/doctor";
-                            }
-                            window.location.href = rtUrl;
-                        }
-                    })
-                };
+                        window.location.href = rtUrl;
+                    }
+                });
             } else {
                 utils.done();
                 Lobibox.alert("error", {
