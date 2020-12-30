@@ -22,7 +22,7 @@
                 <div class="panel-control">
                     <input type="number" placeholder="Textbox" value="@currentYear" id="year" class="form-control">
                 </div>
-                <h3 class="panel-title">Số lượng bệnh nhân đăng kí mới tại viện</h3>
+                <h3 class="panel-title">Số lượng bệnh nhân thăm khám</h3>
             </div>
             <div class="pad-all">
                 <div id="demo-morris-area-legend" class="text-center"></div>
@@ -359,7 +359,7 @@
         getCharDataDoughnut($("#CategoryId").val());
         // ================== END - Chart ==================
 
-        const basePatientUrl = "/doctor/Patient";
+        const basePatientUrl = "/admin/Patient";
 
         //Edit
         function openEditing(id) {
@@ -369,7 +369,7 @@
         //Edit
         function openRecord(id) {
             notify.loading();
-            window.location.href = `/doctor/record?patientId=${id}`;
+            window.location.href = `/admin/record?patientId=${id}`;
         }
     </script>
     <script>
