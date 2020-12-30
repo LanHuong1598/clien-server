@@ -101,6 +101,13 @@
                                 new { @class = "form-control" })
                         </div>
                     </div>
+                    <div class="form-group" id="slDoctor">
+                        <label class="col-lg-3 control-label">Bác sĩ</label>
+                        <div class="col-lg-7 input-group mar-btm">
+                            @Html.DropDownList("DoctorId", (SelectList)ViewBag.Doctors,
+                                new { @class = "form-control" })
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">Phone</label>
                         <div class="col-lg-7 input-group mar-btm">
@@ -154,9 +161,10 @@
             $('#modal-form input[name="Username"]').prop('disabled', true);
             $("#PatientId").select2();
             $("#slPatient").hide();
+            $("#slDoctor").hide();
 
             const isChecked = $("#demo-allow-comments").is(":checked");
-            if (isChecked) {
+            if (isChecked) { 
                 $("#status").text("Nam");
             } else {
                 $("#status").text("Nữ");
@@ -176,7 +184,19 @@
             const role = $("#Role").val();
             if (role === "3") {
                 $("#slPatient").show();
+                $("#slDoctor").hide();
             }
+            else if (role === "2") {
+                $("#slPatient").hide();
+                $("#slDoctor").show();
+            }
+            else {
+                $("#slPatient").hide();
+                $("#slDoctor").hide();
+            }
+
+      
+                
         });
 
         const baseUrl = "/admin/account";
@@ -228,7 +248,21 @@
                 if (isEdit) {
                     formData.set("OldPassword", "");
                 }
-
+                  
+                const role = $("#Role").val();
+                const doctorId = $("#DoctorId").val();
+                console.log(role);
+                if (role === "2") {
+                    console.log(doctorId);
+                    formData.set("DoctorId", doctorId);
+                }
+                if (role === "3") {
+                    const patientId = $("#PatientId").val();
+                    console.log(patientId);
+                    formData.set("PatientId", patientId);
+                }
+                
+                
                 ajax.createOrUpdate(`${baseUrl}/CreateOrEdit`,
                     formData,
                     (response) => {
@@ -278,12 +312,18 @@
                         $('#modal-form input[name="Username"]').val(obj.Username);
                         $('#modal-form input[name="Gender"]').prop('checked', obj.Gender);
                         $('#modal-form select[name="Role"]').val(obj.Role);
-                        console.log(obj.Role);
                         if (obj.Role === 3) {
                             $("#slPatient").show();
                             $("#PatientId").val(obj.PatientId);
                             $('#PatientId').select2().trigger('change');
+                            
                         }
+                        else if (obj.Role === 2) {
+                            $("#slDoctor").show();
+                            $("#DoctorId").val(obj.DoctorId);
+                            $('#DoctorId').select2().trigger('change');
+                        }
+                       
                         if (obj.Gender) {
                             $("#status").text("Nam");
                         } else {

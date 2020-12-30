@@ -1,4 +1,4 @@
-﻿using PatientManagement.Areas.Doctor.Authorization;
+﻿using PatientManagement.Areas.Admin.Authorization;
 using System.Web.Mvc;
 
 namespace PatientManagement.Areas.Doctor.Controllers
