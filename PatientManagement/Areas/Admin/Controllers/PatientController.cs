@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace PatientManagement.Areas.Admin.Controllers
 {
@@ -28,8 +30,19 @@ namespace PatientManagement.Areas.Admin.Controllers
             ViewBag.Feature = "Danh sách";
             ViewBag.Element = KeyElement;
             ViewBag.BaseURL = "/Admin/Patient";
-            
+            if (patientCode == null)
+            {
+                patientCode = "";
+            }
 
+            if (indentificationCardId == null)
+            {
+                indentificationCardId = "";
+            }
+            if (fullName == null)
+            {
+                fullName = "";
+            }
             //if (patientCode == "")
             //{
             //    patientCode = null;
@@ -250,6 +263,97 @@ namespace PatientManagement.Areas.Admin.Controllers
             catch
             {
                 return Json(new { status = false, mess = "Thất bại" });
+            }
+        }
+
+        public ActionResult XuatFileWord()
+        {
+            string targetfile = Server.MapPath("~/Content/template/template1.docx");
+            var doc = DocX.Load(targetfile);
+          
+            var doc1 = doc.Copy();
+            using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
+            {
+                var listdata = workScope.Patients.GetAll().ToList();
+                Table table = doc1.Tables[0];
+                for (int i = 0; i<listdata.Count;i++)
+                {
+                    Row myrow = table.InsertRow();
+                    //cot stt
+                    Paragraph para0 = myrow.Cells[0].Paragraphs.First().Font("Time New Roman").FontSize(14).Append((i + 1).ToString() + ".");
+                    para0.Alignment = Alignment.center;
+                    para0.FontSize(14);
+                    para0.Font("Time New Roman");
+                    //cột mã bệnh nhân
+                    Paragraph para1 = myrow.Cells[1].Paragraphs.First().Append(listdata[i].PatientCode);
+                    para1.FontSize(14);
+                    para1.Font("Time New Roman");
+                    //cột mã căn cước
+                    Paragraph para2 = myrow.Cells[2].Paragraphs.First().Append(listdata[i].IndentificationCardId);
+                    para2.FontSize(14);
+                    para2.Font("Time New Roman");
+                    //cột hộ tên
+                    Paragraph para3 = myrow.Cells[3].Paragraphs.First().Append(listdata[i].FullName);
+                    para3.FontSize(14);
+                    para3.Font("Time New Roman");
+                    //cột ngày sinh
+                    if (listdata[i].DateOfBirth != null)
+                    {
+                        string str = listdata[i].DateOfBirth.ToString();
+                        DateTime date = Convert.ToDateTime(str);
+                        string ngay = "";
+                        string thang = "";
+                        string nam = "";
+                        ngay = date.Day.ToString();
+                        if (ngay.Length == 1)
+                        {
+                            ngay = "0" + ngay;
+                        }
+                        thang = date.Month.ToString();
+                        if (thang.Length == 1)
+                        {
+                            thang = "0" + thang;
+                        }
+                        nam = date.Year.ToString();
+                        if (nam.Length == 1)
+                        {
+                            nam = "0" + nam;
+                        }
+                        string ngaynhan = ngay + "/" + thang + "/" + nam;
+
+                        
+                        Paragraph para4 = myrow.Cells[4].Paragraphs.First().Append(ngaynhan);
+                        para4.FontSize(14);
+                        para4.Font("Time New Roman");
+                        para4.Alignment = Alignment.center;
+                    }
+
+
+                    //cột hộ tên
+                    string gender = "";
+                    if(listdata[i].Gender==true)
+                    {
+                        gender = "Nam";
+                    }    
+                    else
+                    {
+                        gender = "Nữ";
+                    }    
+                    Paragraph para5 = myrow.Cells[5].Paragraphs.First().Append(gender);
+                    para5.FontSize(14);
+                    para5.Font("Time New Roman");
+
+
+                }    
+            }
+                using (var stream = new System.IO.MemoryStream())
+            {
+                doc1.SaveAs(stream);
+                var content = stream.ToArray();
+                return File(
+                    content,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "DanhSachBenhNhan.docx");
             }
         }
     }

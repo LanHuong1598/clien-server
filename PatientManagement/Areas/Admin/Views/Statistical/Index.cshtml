@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<BELibrary.Entity.Patient>
+@{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     var currentYear = DateTime.Now.Year;
@@ -8,6 +9,9 @@
 
     <!--Morris.js [ OPTIONAL ]-->
     <link href="/Areas/Admin/Content/plugins/morris-js/morris.min.css" rel="stylesheet">
+    <!--DataTables [ OPTIONAL ]-->
+    <link href="/Areas/Admin/Content/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Areas/Admin/Content/plugins/datatables/extensions/Responsive/css/responsive.dataTables.min.css" rel="stylesheet">
 }
 
 <div class="row">
@@ -20,7 +24,7 @@
                 <div class="panel-control">
                     <input type="number" placeholder="Textbox" value="@currentYear" id="year" class="form-control">
                 </div>
-                <h3 class="panel-title">Số lượng bệnh nhân thăm khám</h3>
+                <h3 class="panel-title">Số lượng khám bệnh của bác sĩ</h3>
             </div>
             <div class="pad-all">
                 <div id="demo-morris-area-legend" class="text-center"></div>
@@ -47,17 +51,86 @@
         </div>
     </div>
 </div>
+<!--List-->
+<div class="panel">
+    <div class="panel-body">
 
+        <div class="pad-btm form-inline">
+            <div class="row">
+                <div class="col-sm-6 table-toolbar-left">
+                    <h2> Danh sách bệnh nhân đợi thăm khám</h2>
+                    <div class="col-sm-6 table-toolbar-left">
+                        @*<a class="btn btn-success" href="/Admin/Patient/XuatFileWord">
+                            <i class=""></i> Xuất file Word
+                        </a>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tblData">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Mã BN</th>
+                        <th class="text-center">Họ Tên</th>
+                        <th class="text-center">Mã căn cước</th>
+                        <th class="text-center">Ngày sinh</th>
+                        <th class="text-center">Giới tính</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Select((value, i) => new { i, value }))
+                    {
+                        <tr id="row_@item.value.Id">
+                            <td class="text-center">@(item.i + 1)</td>
+                            <td class="text-center"><span class="badge badge-success">@item.value.PatientCode</span></td>
+                            <td class="text-center">@item.value.FullName</td>
+                            <td class="text-center">@item.value.IndentificationCardId</td>
+                            <td class="text-center">@item.value.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">@(item.value.Gender ? "Nam" : "Nữ")</td>
+                            <td class="text-center">
+                                <button class="btn btn-info btn-icon" title="Xem bệnh án" onclick="openRecord('@item.value.Id')"><i class="fa fa-calendar  icon-lg"></i></button>
+                                <button class="btn btn-info btn-icon" title="Sửa bệnh án" onclick="openEditing('@item.value.Id')"><i class="demo-psi-pen-5 icon-lg"></i></button>
+                                <button class="btn btn-danger btn-icon" onclick="deleteElement('@item.value.Id','@item.value.FullName')"><i class="demo-psi-recycling icon-lg"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @section Scripts{
 
     <!--Morris.js [ OPTIONAL ]-->
     <script src="/Areas/Admin/Content/plugins/morris-js/morris.min.js"></script>
     <script src="/Areas/Admin/Content/plugins/morris-js/raphael-js/raphael.min.js"></script>
     <script src="~/Areas/Admin/Content/js/live/chart.statistical.js"></script>
+    <!--DataTables [ OPTIONAL ]-->
+    <script src="/Areas/Admin/Content/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Areas/Admin/Content/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="/Areas/Admin/Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 
     <script>
-        const baseUrl = `/Admin/Statistical`;
 
+        $(document).ready(function () {
+            $('#tblData').dataTable({
+                "language": {
+                    "paginate": {
+                        "previous": '<i class="demo-psi-arrow-left"></i>',
+                        "next": '<i class="demo-psi-arrow-right"></i>'
+                    }
+                }
+            });
+        });
+        const baseUrl = `/Admin/Statistical`;
+        //Edit
+        function openRecord(id) {
+            notify.loading();
+            window.location.href = `/admin/record?patientId=${id}`;
+        }
         function getCharData(year) {
             notify.loading();
             ajax.get(`${baseUrl}/GetRegByYear`,
