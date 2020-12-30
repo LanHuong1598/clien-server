@@ -120,9 +120,10 @@ namespace PatientManagement.Areas.Admin.Controllers
 
                             elm = input;
                             elm.DoctorId = detailDoctorId;
-
+                            elm.Date = DateTime.Today;
                             workScope.DetailRecords.Put(elm, elm.Id);
                             workScope.Complete();
+                            
 
                             //attachments handle
 
@@ -149,7 +150,7 @@ namespace PatientManagement.Areas.Admin.Controllers
                         //Che bien du lieu
                         input.Id = Guid.NewGuid();
                         input.DoctorId = detailDoctorId;
-
+                        input.Date = DateTime.Today;
                         workScope.DetailRecords.Add(input);
                         workScope.Complete();
                     }
