@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using BELibrary.Core.Entity;
 using BELibrary.Core.Utils;
 using BELibrary.DbContext;
+using BELibrary.Entity;
 using PatientManagement.Areas.Admin.Models;
 
 namespace PatientManagement.Areas.Admin.Controllers
@@ -20,7 +22,11 @@ namespace PatientManagement.Areas.Admin.Controllers
             {
                 var categories = workScope.Categories.GetAll().ToList();
                 ViewBag.Categories = new SelectList(categories, "Id", "Name");
-                return View();
+
+                List<Patient> listData = new List<Patient>();
+                listData = new PatientManagementDbContext().Database.SqlQuery<Patient>("exec ThongKeBenhNhanDoiThamKham").ToList();
+                //ViewBag.Patients = listData;
+                return View(listData);
             }
         }
 
@@ -57,6 +63,7 @@ namespace PatientManagement.Areas.Admin.Controllers
 
 
                 SqlParameter paraYear = new SqlParameter("@year", year);
+                paraYear.SqlDbType = SqlDbType.Int;
                 List<StatisticPatient> lstPati = new List<StatisticPatient>();
                 lstPati = new PatientManagementDbContext().Database.SqlQuery<StatisticPatient>("exec ThongkeBenhNhan_Nam @year", paraYear).ToList();
 

@@ -136,6 +136,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Xceed.Document.NET, Version=1.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.7.1\lib\net40\Xceed.Document.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Words.NET, Version=1.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.7.1\lib\net40\Xceed.Words.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -5608,6 +5614,7 @@
     <Content Include="Areas\Doctor\Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Areas\Doctor\Views\Statistical\Index.cshtml" />
     <Content Include="Areas\Doctor\Views\web.config" />
+    <Content Include="Content\template\template1.docx" />
     <None Include="Properties\PublishProfiles\health-sauanla - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\health-sauanla - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\health-sauanla - Web Deploy.pubxml" />
