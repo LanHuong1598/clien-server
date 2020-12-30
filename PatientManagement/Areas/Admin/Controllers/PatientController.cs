@@ -2,6 +2,9 @@
 using BELibrary.DbContext;
 using BELibrary.Entity;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -25,24 +28,36 @@ namespace PatientManagement.Areas.Admin.Controllers
             ViewBag.Feature = "Danh sách";
             ViewBag.Element = KeyElement;
             ViewBag.BaseURL = "/Admin/Patient";
+            
 
-            if (patientCode == "")
-            {
-                patientCode = null;
-            }
-            if (indentificationCardId == "")
-            {
-                indentificationCardId = null;
-            }
-            if (fullName == "")
-            {
-                fullName = null;
-            }
+            //if (patientCode == "")
+            //{
+            //    patientCode = null;
+            //}
+            //if (indentificationCardId == "")
+            //{
+            //    indentificationCardId = null;
+            //}
+            //if (fullName == "")
+            //{
+            //    fullName = null;
+            //}
 
             using (var workScope = new UnitOfWork(new PatientManagementDbContext()))
             {
-                var listData = workScope.Patients.Query(x => x.Status).OrderByDescending(x => x.JoinDate).ToList();
-
+                //patientCode = "'" + patientCode + "'";
+                //indentificationCardId = "'" + indentificationCardId + "'";
+                //fullName = "'" + fullName + "'";
+                //var listData = workScope.Patients.Query(x => x.Status).OrderByDescending(x => x.JoinDate).ToList();
+                SqlParameter patiCode_ = new SqlParameter("@patientcode", patientCode);
+                SqlParameter cardId_ = new SqlParameter("@indentificationCardId", indentificationCardId);
+                SqlParameter fullname_ = new SqlParameter("@fullname", fullName);
+                patiCode_.SqlDbType = SqlDbType.VarChar;
+                cardId_.SqlDbType = SqlDbType.VarChar;
+                fullname_.SqlDbType = SqlDbType.VarChar;
+                List<Patient> listData = new List<Patient>();
+                
+                listData = new PatientManagementDbContext().Database.SqlQuery<Patient>("exec searchPatient @patientcode,@indentificationCardId,@fullname", patiCode_,cardId_,fullname_).ToList();
                 //var data = listData.Where(x => x.JoinDate > new DateTime(2020, 5, 1) && x.JoinDate < new DateTime(2020, 6, 1));
                 //var r = new Random();
                 //foreach (var p in data)
@@ -53,16 +68,16 @@ namespace PatientManagement.Areas.Admin.Controllers
                 //}
                 //workScope.Complete();
 
-                var q = from mt in listData
-                        where (!string.IsNullOrEmpty(patientCode) && mt.PatientCode.ToLower().Contains(patientCode.ToLower()))
-                              || (!string.IsNullOrEmpty(indentificationCardId) && mt.IndentificationCardId.ToLower().Contains(indentificationCardId.ToLower()))
-                              || (!string.IsNullOrEmpty(fullName) && mt.FullName.ToLower().Contains(fullName.ToLower()))
-                        select mt;
-                if (patientCode == null && indentificationCardId == null && fullName == null)
-                {
-                    return View(listData);
-                }
-                return View(q.OrderByDescending(x => x.JoinDate).ToList());
+                //var q = from mt in listData
+                //        where (!string.IsNullOrEmpty(patientCode) && mt.PatientCode.ToLower().Contains(patientCode.ToLower()))
+                //              || (!string.IsNullOrEmpty(indentificationCardId) && mt.IndentificationCardId.ToLower().Contains(indentificationCardId.ToLower()))
+                //              || (!string.IsNullOrEmpty(fullName) && mt.FullName.ToLower().Contains(fullName.ToLower()))
+                //        select mt;
+                //if (patientCode == null && indentificationCardId == null && fullName == null)
+                //{
+                //    return View(listData);
+                //}
+                return View(listData);
             }
         }
 
@@ -139,7 +154,7 @@ namespace PatientManagement.Areas.Admin.Controllers
                         {
                             input.Status = true;
                             input.PatientCode = elm.PatientCode;
- 			    input.RecordId = elm.RecordId;
+ 			                input.RecordId = elm.RecordId;
                             elm = input;
 
                             workScope.Patients.Put(elm, elm.Id);
