@@ -65,6 +65,7 @@ namespace BELibrary.Persistence.Repositories
                     x.UserName.ToLower() == username.ToLower()
                     && x.Password == passwordCrypto);
 
+
             return account;
         }
 
