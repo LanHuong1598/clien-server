@@ -29,8 +29,16 @@ namespace PatientManagement.Areas.Admin.Controllers
                 var lstRole = RoleKey.GetDic();
                 ViewBag.Roles = new SelectList(lstRole, "Value", "Text");
 
-                var patients = workScope.Patients.GetAll().ToList();
+                List<Patient> patients = new List<Patient>();
+                patients = new PatientManagementDbContext().Database.SqlQuery<Patient>("exec getPatient").ToList();
+
+
                 ViewBag.Patients = new SelectList(patients, "Id", "FullName");
+
+                List<BELibrary.Entity.Doctor> doctors = new List<BELibrary.Entity.Doctor>();
+                doctors = new PatientManagementDbContext().Database.SqlQuery<BELibrary.Entity.Doctor>("exec getDoctor").ToList();
+                
+                ViewBag.Doctors = new SelectList(doctors, "Id", "Name");
 
                 var listData = workScope.Accounts.GetAll().ToList();
                 return View(listData);
@@ -59,6 +67,7 @@ namespace PatientManagement.Areas.Admin.Controllers
                             account.Id,
                             account.FullName,
                             account.PatientId,
+                            account.DoctorId,
                             account.Phone,
                             account.UserName,
                             account.Gender,
@@ -107,6 +116,20 @@ namespace PatientManagement.Areas.Admin.Controllers
                             }
 
                             input.UserName = elm.UserName;
+
+                            if (input.Role == RoleKey.Admin)
+                            {
+                                input.PatientId = null;
+                                input.DoctorId = null;
+                            }
+                            else if (input.Role == RoleKey.Doctor)
+                            {
+                                input.PatientId = null;
+                            }
+                            else if (input.Role == RoleKey.Patient)
+                            {
+                                input.DoctorId = null;
+                            }
                             elm = input;
 
                             workScope.Accounts.Put(elm, elm.Id);
@@ -172,6 +195,19 @@ namespace PatientManagement.Areas.Admin.Controllers
                         input.Password = passwordCrypto;
                         input.Id = Guid.NewGuid();
 
+                        if (input.Role == RoleKey.Admin)
+                        {
+                            input.PatientId = null;
+                            input.DoctorId = null;
+                        }
+                        else if (input.Role == RoleKey.Doctor)
+                        {
+                            input.PatientId = null;
+                        }
+                        else if (input.Role == RoleKey.Patient)
+                        {
+                            input.DoctorId = null;
+                        }
                         workScope.Accounts.Add(input);
                         workScope.Complete();
                     }
