@@ -54,6 +54,7 @@ namespace PatientManagement.Areas.Doctor.Controllers
                 //            count = g.Count()
                 //        });
                 SqlParameter paraYear = new SqlParameter("@year", year);
+                paraYear.SqlDbType = System.Data.SqlDbType.Int;
                 List<StatisticPatient> lstPati = new List<StatisticPatient>();
                 lstPati = new PatientManagementDbContext().Database.SqlQuery<StatisticPatient>("exec ThongkeBenhNhan_Nam @year", paraYear).ToList();
                 return

@@ -57,10 +57,10 @@
 
     <script>
         const baseUrl = `/Doctor/Statistical`;
-
+        const baseUrl1 = `/Admin/Statistical`
         function getCharData(year) {
             notify.loading();
-            ajax.get(`${baseUrl}/GetRegByYear`,
+            ajax.get(`${baseUrl1}/GetRegByYear`,
                 {
                     year: year
                 },
