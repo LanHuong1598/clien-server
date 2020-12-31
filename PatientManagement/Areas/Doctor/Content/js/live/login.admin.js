@@ -10,7 +10,7 @@
                 notify.push(response.mess, notify.EType.SUCCESS);
                 var rtUrl = $('#rtUrl').val();
                 if (rtUrl === "" || rtUrl === undefined) {
-                    rtUrl = "/doctor";
+                    rtUrl = "/Doctor";
                 }
                 setTimeout(function () {
                     window.location.href = rtUrl;

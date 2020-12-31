@@ -62,7 +62,8 @@ namespace BELibrary.Persistence.Repositories
 
             var account =
                 db.Accounts.FirstOrDefault(x =>
-                    x.UserName.ToLower() == username.ToLower()
+                    x.Role == RoleKey.Patient
+                    && x.UserName.ToLower() == username.ToLower()
                     && x.Password == passwordCrypto);
 
 
