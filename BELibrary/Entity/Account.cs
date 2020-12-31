@@ -31,7 +31,6 @@ namespace BELibrary.Entity
         public int Role { get; set; }
 
         public Guid? PatientId { get; set; }
-        public Guid? DoctorId { get; set; }
 
         public virtual Patient Patient { get; set; }
     }
